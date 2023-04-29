@@ -1,0 +1,31 @@
+name: rever
+
+on:
+  workflow_dispatch:
+    
+
+jobs:
+
+  build:
+
+    runs-on: windows-latest  # For a list of available runner types, refer to
+                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Install the .NET Core workload
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+
+    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.2
+
+
+    - name: Run
+      run: dotnet run -c Release -- --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001251996661
+
+  
