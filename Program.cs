@@ -35,7 +35,8 @@ namespace rever
         }
         static async Task Post(TelegramBotClient bot, long channel)
         {
-            await bot.SendPhotoAsync(channel, new Telegram.Bot.Types.InputFiles.InputOnlineFile(await imageProvider.GetUrl()));
+            var input = new Telegram.Bot.Types.InputFiles.InputOnlineFile(await imageProvider.GetImageStream());
+            await bot.SendPhotoAsync(channel, input);
         }
     }
 }
