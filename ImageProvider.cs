@@ -20,11 +20,15 @@ namespace rever
             boorus[0] = new Yandere();
             boorus[0].HttpClient = downloader;
         }
-        public async Task<Stream> GetImageStream()
+        public async Task<PostInfo> GetImageStream()
         {
             var target = await boorus[0].GetRandomPostAsync();
+            PostInfo result = new PostInfo();
             Stream raw = await downloader.GetStreamAsync(target.FileUrl);
-            return raw;
+            result.imageStream = raw;
+            result.postLink = target.PostUrl;
+            result.tags = target.Tags.Select((x) => { return x; }).ToArray();
+            return result;
         }
     }
 }

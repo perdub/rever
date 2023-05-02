@@ -13,6 +13,7 @@ namespace rever
         static ImageEditor imageEditor;
         async static Task Main(string[] args)
         {
+            args = "--token=5967832290:AAHpUWetgibCSuuioggQl8YhY7T9e0GVEaU -c -1001251996661".Split();
             var par = Parser.Default.ParseArguments<Options>(args);
             TelegramBotClient client;
             if (!par.Errors.Any())
@@ -38,10 +39,10 @@ namespace rever
         }
         static async Task Post(TelegramBotClient bot, long channel)
         {
-            Stream s = await imageProvider.GetImageStream();
-            Stream final = await imageEditor.CompressImage(s);
+            PostInfo s = await imageProvider.GetImageStream();
+            Stream final = await imageEditor.CompressImage(s.imageStream);
             var input = new Telegram.Bot.Types.InputFiles.InputOnlineFile(final);
-            await bot.SendPhotoAsync(channel, input);
+            await bot.SendPhotoAsync(channel, input, parseMode:Telegram.Bot.Types.Enums.ParseMode.Html, caption:s.ToString());
         }
     }
 }
