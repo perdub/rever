@@ -3,12 +3,14 @@ using System.Linq;
 using CommandLine;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.IO;
 using Telegram.Bot;
 namespace rever
 {
     class Program
     {
         static ImageProvider imageProvider;
+        static ImageEditor imageEditor;
         async static Task Main(string[] args)
         {
             var par = Parser.Default.ParseArguments<Options>(args);
@@ -18,6 +20,7 @@ namespace rever
                 Options input = par.Value;
                 client = new(input.Token);
                 imageProvider = new();
+                imageEditor = new();
                 await Bot(client, input.channels.GetEnumerator());
             }
         }
@@ -35,7 +38,9 @@ namespace rever
         }
         static async Task Post(TelegramBotClient bot, long channel)
         {
-            var input = new Telegram.Bot.Types.InputFiles.InputOnlineFile(await imageProvider.GetImageStream());
+            Stream s = await imageProvider.GetImageStream();
+            Stream final = await imageEditor.CompressImage(s);
+            var input = new Telegram.Bot.Types.InputFiles.InputOnlineFile(final);
             await bot.SendPhotoAsync(channel, input);
         }
     }

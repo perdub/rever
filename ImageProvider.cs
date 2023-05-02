@@ -24,10 +24,6 @@ namespace rever
         {
             var target = await boorus[0].GetRandomPostAsync();
             Stream raw = await downloader.GetStreamAsync(target.FileUrl);
-       /*     if (raw.Length > 10 * 1024 * 1024)
-            {
-                //todo: compress image
-            }//*/
             return raw;
         }
     }
