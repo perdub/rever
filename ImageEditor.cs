@@ -37,12 +37,14 @@ namespace rever
                 raw.Mutate(x => x.Resize(0, 10000));
             }
             MemoryStream output = new MemoryStream();
-            do
+            raw.Save(output, new PngEncoder());
+            while (output.Length >= StreamMaxSize)
             {
                 output.Position = 0;
+                int newwidth = Convert.ToInt32(Math.Round(raw.Width * 0.8, MidpointRounding.ToEven));
+                raw.Mutate(x => x.Resize(newwidth, 0));
                 raw.Save(output, new PngEncoder());
             }
-            while (output.Length>=StreamMaxSize);
 
             output.Position = 0;
             raw.Dispose();
