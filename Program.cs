@@ -13,7 +13,6 @@ namespace rever
         static ImageEditor imageEditor;
         async static Task Main(string[] args)
         {
-            args = "--token=5967832290:AAHpUWetgibCSuuioggQl8YhY7T9e0GVEaU -c -1001251996661".Split();
             var par = Parser.Default.ParseArguments<Options>(args);
             TelegramBotClient client;
             if (!par.Errors.Any())
