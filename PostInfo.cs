@@ -13,6 +13,13 @@ namespace rever
         public Uri postLink { get; set; }
         public string[] tags { get; set; }
 
+        private static string clear(string tag)
+        {
+            //this function clear tag  from symbols like ( ) - ! and ets
+            //thiis need because telegram dont add this symbols to tags
+            //please, change this only IF YOU REALLY NEED THIS
+            return tag.Replace('-', '_').Replace("(", "").Replace(")", "").Replace("&", "and").Replace(":", "").Replace("!", "");
+        }
 
         public override string ToString()
         {
@@ -22,7 +29,7 @@ namespace rever
             foreach(var tag in tags)
             {
                 sb.Append('#');
-                sb.Append(tag);
+                sb.Append(clear(tag));
                 sb.Append(' ');
             }
             return sb.ToString();
