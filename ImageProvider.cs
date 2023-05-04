@@ -29,7 +29,7 @@ namespace rever
             //we can take only 3 tags
             List<string> selectedtags = new List<string>();
             selectedtags.Capacity = tags.Length;
-            for(int i = 0; i<Math.Min(tags.Length,3); i++)
+            for(int i = 0; i<Math.Min(tags.Length, random.Next(1, 6)); i++)
             {
                 selectedtags.Add(tags[random.Next(tags.Length)]);
             }
