@@ -21,23 +21,21 @@ namespace rever
                 client = new(input.Token);
                 imageProvider = new();
                 imageEditor = new();
-                await Bot(client, input.channels.GetEnumerator());
+                await Bot(client, input.Channel);
             }
         }
-        static async Task Bot(TelegramBotClient bot, IEnumerator<long> channels)
+        static async Task Bot(TelegramBotClient bot, long channel)
         {
             var me = await bot.GetMeAsync();
             Console.WriteLine("Bot id: " + me.Id);
 
-            List<Task> postTasks = new();
-            while (channels.MoveNext())
-            {
-                postTasks.Add(Post(bot, channels.Current));
-            }
-            Task.WaitAll(postTasks.ToArray());
+            await Post(bot, channel);
         }
         static async Task Post(TelegramBotClient bot, long channel)
         {
+#if DEBUG
+            Console.WriteLine($"Try to post to {channel} channel");
+            #endif
             PostInfo s = await imageProvider.GetImageStream();
             Stream final = await imageEditor.CompressImage(s.imageStream);
             var input = new Telegram.Bot.Types.InputFiles.InputOnlineFile(final);

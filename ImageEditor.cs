@@ -21,6 +21,10 @@ namespace rever
             await image.CopyToAsync(buffer);
             buffer.Position = 0;
 
+#if DEBUG
+            Console.WriteLine($"Stream length - {buffer.Length}");
+#endif
+
             var info = Image.Identify(buffer);
             buffer.Position = 0;
             Image raw = Image.Load(buffer);
@@ -44,6 +48,9 @@ namespace rever
                 int newwidth = Convert.ToInt32(Math.Round(raw.Width * 0.8, MidpointRounding.ToEven));
                 raw.Mutate(x => x.Resize(newwidth, 0));
                 raw.Save(output, new PngEncoder());
+#if DEBUG
+                Console.WriteLine($"New stream length - {buffer.Length}");
+#endif
             }
 
             output.Position = 0;

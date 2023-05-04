@@ -10,7 +10,7 @@ namespace rever
     {
         [Option("token", Required = true, HelpText = "Token to telegram bot")]
         public string Token { get; set; }
-        [Option('c', Separator = ':', Required = false, HelpText = "Channels ids")]
-        public IEnumerable<long> channels { get; set; }
+        [Option('c', Required = true, HelpText = "Channel id")]
+        public long Channel { get; set; }
     }
 }
