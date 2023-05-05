@@ -35,7 +35,7 @@ namespace rever
             }
             return selectedtags.ToArray();
         }
-        public async Task<PostInfo> GetImageStream(params string[] tags)
+        public async Task<PostInfo> GetImageStream(Rating rating, params string[] tags)
         {
 #if DEBUG
             Stopwatch starttime = new Stopwatch();
@@ -47,11 +47,28 @@ namespace rever
             Console.WriteLine($"Selected tags: {Newtonsoft.Json.JsonConvert.SerializeObject(finaltags)}");
 #endif
             SearchResult target;
+            int ratingbadresult = 0;
             do
             {
                 try
                 {
                     target = await boorus[0].GetRandomPostAsync(finaltags);
+                    if ((int)target.Rating > (int)rating)
+                    {
+                        ratingbadresult++;
+                        if (ratingbadresult > 9)
+                        {
+                            finaltags = getrandomtags(tags);
+#if DEBUG
+                            Console.WriteLine($"Edit selected tags: {Newtonsoft.Json.JsonConvert.SerializeObject(finaltags)}");
+#endif
+                            ratingbadresult = 0;
+                        }
+#if DEBUG
+                        Console.WriteLine("Censored!");
+#endif
+                        continue;
+                    }
                 }
                 catch(BooruSharp.Search.InvalidTags fall)
                 {
