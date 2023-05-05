@@ -26,7 +26,6 @@ namespace rever
         }
         private string[] getrandomtags(params string[] tags)
         {
-            //we can take only 3 tags
             List<string> selectedtags = new List<string>();
             selectedtags.Capacity = tags.Length;
             for(int i = 0; i<Math.Min(tags.Length, random.Next(1, 6)); i++)
@@ -88,7 +87,7 @@ namespace rever
                 }
                 catch(Exception e)
                 {
-                    throw e;
+                    throw;
                 }
                 break;
             }
@@ -97,8 +96,9 @@ namespace rever
             PostInfo result = new PostInfo();
             Stream raw = await downloader.GetStreamAsync(target.FileUrl);
             result.imageStream = raw;
+            result.fileLink = target.FileUrl;
             result.postLink = target.PostUrl;
-            result.tags = target.Tags.Select((x) => { return x; }).ToArray();
+            result.tags = target.Tags.ToArray();
 #if DEBUG
             starttime.Stop();
             Console.WriteLine($"Image load, elapsed time - {starttime.Elapsed}");

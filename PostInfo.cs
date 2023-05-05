@@ -11,6 +11,7 @@ namespace rever
     {
         public Stream imageStream { get; set; }
         public Uri postLink { get; set; }
+        public Uri fileLink { get; set; }
         public string[] tags { get; set; }
 
         private static string clear(string tag)
@@ -18,13 +19,13 @@ namespace rever
             //this function clear tag  from symbols like ( ) - ! and ets
             //thiis need because telegram dont add this symbols to tags
             //please, change this only IF YOU REALLY NEED THIS
-            return tag.Replace('-', '_').Replace("(", "").Replace(")", "").Replace("&", "and").Replace(":", "").Replace("!", "").Replace('.','_').Replace("/", "");
+            return tag.Replace('-', '_').Replace("(", "").Replace(")", "").Replace("&", "and").Replace(":", "").Replace("!", "").Replace('.','_').Replace("/", "").Replace("@", "");
         }
 
         public override string ToString()
         {
             StringBuilder sb = new();
-            sb.Append($"<a href=\"{postLink.AbsoluteUri}\">Источник</a>");
+            sb.Append($"<a href=\"{postLink.AbsoluteUri}\">Источник</a>|<a href=\"{fileLink}\">Файл</a>");
             sb.AppendLine(); sb.AppendLine();
             foreach(var tag in tags)
             {

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Formats;
 
 namespace rever
 {
@@ -16,8 +17,7 @@ namespace rever
 
         public async Task<Stream> CompressImage(Stream image)
         {
-            MemoryStream buffer = new MemoryStream();
-
+            using MemoryStream buffer = new MemoryStream();
             await image.CopyToAsync(buffer);
             buffer.Position = 0;
 
@@ -25,37 +25,36 @@ namespace rever
             Console.WriteLine($"Stream length - {buffer.Length}");
 #endif
 
-            var info = Image.Identify(buffer);
-            buffer.Position = 0;
-            Image raw = Image.Load(buffer);
+            using Image raw = (await Image.LoadWithFormatAsync(buffer)).Image;
 
-            if (info.Width > 10000)
+            if (raw.Width > 10000)
             {
                 //compress by horizontaly
                 raw.Mutate(x => x.Resize(10000, 0));
             }
 
-            if (info.Height > 10000)
+            if (raw.Height > 10000)
             {
                 //compress by verticaly
                 raw.Mutate(x => x.Resize(0, 10000));
             }
+
             MemoryStream output = new MemoryStream();
-            raw.Save(output, new PngEncoder());
+            PngEncoder encoder = new PngEncoder { CompressionLevel = PngCompressionLevel.BestCompression };
+            raw.Save(output, encoder);
             while (output.Length >= StreamMaxSize)
             {
-                output = new();
+                output.Position = 0;
                 int newwidth = Convert.ToInt32(Math.Round(raw.Width * 0.8, MidpointRounding.ToEven));
                 raw.Mutate(x => x.Resize(newwidth, 0));
-                raw.Save(output, new PngEncoder());
+                output.SetLength(0);
+                raw.Save(output, encoder);
 #if DEBUG
-                Console.WriteLine($"New stream length - {buffer.Length}");
+                Console.WriteLine($"New stream length - {output.Length}");
 #endif
             }
 
             output.Position = 0;
-            raw.Dispose();
-
             return output;
         }
     }
