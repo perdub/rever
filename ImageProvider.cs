@@ -13,7 +13,7 @@ namespace rever
 {
     public class ImageProvider
     {
-        ABooru[] boorus = new ABooru[1];
+        ABooru[] boorus = new ABooru[3];
         HttpClient downloader;
         Random random;
         public ImageProvider()
@@ -23,6 +23,10 @@ namespace rever
 
             boorus[0] = new Yandere();
             boorus[0].HttpClient = downloader;
+            boorus[1] = new DanbooruDonmai();
+            boorus[1].HttpClient = downloader;
+            boorus[2] = new Gelbooru();
+            boorus[2].HttpClient = downloader;
         }
         private string[] getrandomtags(params string[] tags)
         {
@@ -47,11 +51,24 @@ namespace rever
 #endif
             SearchResult target;
             int ratingbadresult = 0;
+            ABooru source = boorus[random.Next(boorus.Length)];
+#if DEBUG
+            Console.WriteLine($"Booru source base url: {source.BaseUrl}");
+#endif
             do
             {
                 try
                 {
-                    target = await boorus[0].GetRandomPostAsync(finaltags);
+                    if (source.NoMoreThanTwoTags)
+                    {
+                        if (finaltags.Length != 0)
+                        {
+                            string[] buffer = new string[1];
+                            buffer[0] = finaltags[0];
+                            finaltags = buffer;
+                        }
+                    }
+                    target = await source.GetRandomPostAsync(finaltags);
                     if ((int)target.Rating > (int)rating)
                     {
                         ratingbadresult++;

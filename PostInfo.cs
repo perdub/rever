@@ -4,6 +4,7 @@ using System.Linq;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace rever
 {
@@ -19,13 +20,13 @@ namespace rever
             //this function clear tag  from symbols like ( ) - ! and ets
             //thiis need because telegram dont add this symbols to tags
             //please, change this only IF YOU REALLY NEED THIS
-            return tag.Replace('-', '_').Replace("(", "").Replace(")", "").Replace("&", "and").Replace(":", "").Replace("!", "").Replace('.','_').Replace("/", "").Replace("@", "");
+            return Regex.Replace(tag, @"[-():!./@]", "_").Replace("&", "and");
         }
 
         public override string ToString()
         {
             StringBuilder sb = new();
-            sb.Append($"<a href=\"{postLink.AbsoluteUri}\">Источник</a>|<a href=\"{fileLink}\">Файл</a>");
+            sb.Append($"<a href=\"{postLink.AbsoluteUri}\">Источник</a>|<a href=\"{fileLink.AbsoluteUri}\">Файл</a>");
             sb.AppendLine(); sb.AppendLine();
             foreach(var tag in tags)
             {
