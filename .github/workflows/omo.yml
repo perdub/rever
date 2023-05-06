@@ -16,4 +16,4 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
     - name: Run
-      run: dotnet run -c Debug -- --token=${{ secrets.TELEGRAM_BOT_TOKEN }} --usepixiv --pixivrefresh=${{ secrets.PIXIV_REFRESH_TOKEN }} -c -1001836193798 --rating Explicit
+      run: dotnet run -c Debug -- --token=${{ secrets.TELEGRAM_BOT_TOKEN }} --usepixiv --pixivrefresh=${{ secrets.PIXIV_REFRESH_TOKEN }} -c -1001836193798 --rating Explicit --tags=女の子%ロリ%美少女%日常%AIイラスト%AI生成%原神%ホロライブ%VTuber
