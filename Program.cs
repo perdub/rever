@@ -14,7 +14,6 @@ namespace rever
         static ImageEditor imageEditor;
         async static Task Main(string[] args)
         {
-            args = "--rating Questionable --token=5967832290:AAGzkcZdYyjBt0NHcSRYEX8Dqw4-hK-RCsc -c -1001251996661 --tags=genshin_impact%ass%pussy%open_shirt%pantsu%girls_und_panzer%animal_ears%loli%trap%wet%naked%bottomless%seifuku%undressing%uniform%bunny_ears%bunny_girl%nekomimi%neko%hatsune_miku%re_zero_kara_hajimeru_isekai_seikatsu%maid%honkai:_star_rail%wallpaper".Split();
             var par = Parser.Default.ParseArguments<Options>(args);
             TelegramBotClient client;
             if (!par.Errors.Any())
