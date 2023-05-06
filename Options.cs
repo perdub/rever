@@ -19,5 +19,11 @@ namespace rever
 
         [Option("rating", Required = false, Default = "Questionable", HelpText = "Rating to post.\nCan be General, Safe, Questionable and Explicit. By default - Safe.")]
         public string Rating { get; set; }
+
+        [Option("pixivrefresh", Required = false, HelpText = "Pixiv api refresh token. Need only if you want to use pixiv as source.")]
+        public string PixivRefreshToken { set; get; }
+
+        [Option("usepixiv", Default = false, HelpText = "true if ypu want to use pixiv as source. If true, you need to set --pixivrefresh. If you using pixiv, you can`t use other sources(don`t ask why).")]
+        public bool UsePixiv { get; set; }
     }
 }

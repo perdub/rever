@@ -8,25 +8,38 @@ using BooruSharp.Booru;
 using System.Net.Http;
 using System.Diagnostics;
 using BooruSharp.Search.Post;
+using BooruSharp.Others;
 
 namespace rever
 {
     public class ImageProvider
     {
-        ABooru[] boorus = new ABooru[3];
+        List<ABooru> boorus = new List<ABooru>();
         HttpClient downloader;
         Random random;
-        public ImageProvider()
+        public ImageProvider(string pixivrefresh)
         {
             downloader = new HttpClient();
             random = new();
 
-            boorus[0] = new Yandere();
-            boorus[0].HttpClient = downloader;
-            boorus[1] = new DanbooruDonmai();
-            boorus[1].HttpClient = downloader;
-            boorus[2] = new Gelbooru();
-            boorus[2].HttpClient = downloader;
+            if (pixivrefresh != null)
+            {
+#if DEBUG
+                Console.WriteLine($"Enable pixiv api...");
+#endif
+                boorus.Add(new Pixiv());
+                ((Pixiv)boorus[^1]).LoginAsync(pixivrefresh).Wait();
+                boorus[^1].HttpClient = downloader;
+            }
+            else
+            {
+                boorus.Add(new Yandere());
+                boorus[^1].HttpClient = downloader;
+                boorus.Add(new DanbooruDonmai());
+                boorus[^1].HttpClient = downloader;
+                boorus.Add(new Gelbooru());
+                boorus[^1].HttpClient = downloader;
+            }
         }
         private string[] getrandomtags(params string[] tags)
         {
@@ -51,7 +64,7 @@ namespace rever
 #endif
             SearchResult target;
             int ratingbadresult = 0;
-            ABooru source = boorus[random.Next(boorus.Length)];
+            ABooru source = boorus[random.Next(boorus.Count)];
 #if DEBUG
             Console.WriteLine($"Booru source base url: {source.BaseUrl}");
 #endif
@@ -111,7 +124,17 @@ namespace rever
             while (true);
 
             PostInfo result = new PostInfo();
-            Stream raw = await downloader.GetStreamAsync(target.FileUrl);
+
+            Stream raw;
+            if (source is Pixiv)
+            {
+                raw = new MemoryStream(await ((Pixiv)source).ImageToByteArrayAsync(target));
+            }
+            else
+            {
+                raw = await downloader.GetStreamAsync(target.FileUrl);
+            }
+
             result.imageStream = raw;
             result.fileLink = target.FileUrl;
             result.postLink = target.PostUrl;

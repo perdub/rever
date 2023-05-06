@@ -20,7 +20,7 @@ namespace rever
             {
                 Options input = par.Value;
                 client = new(input.Token);
-                imageProvider = new();
+                imageProvider = new(input.UsePixiv ? input.PixivRefreshToken : null);
                 imageEditor = new();
 
                 Rating target;
