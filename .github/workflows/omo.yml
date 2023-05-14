@@ -14,4 +14,4 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Run
-      run: dotnet run -c Debug -- --token=${{ secrets.TELEGRAM_BOT_TOKEN }} --usepixiv --pixivrefresh=${{ secrets.PIXIV_REFRESH_TOKEN }} -c -1001836193798 --rating Explicit --tags=女の子%ロリ%美少女%日常%AIイラスト%AI生成%原神%ホロライブ%VTuber%崩坏星穹铁道%新世紀エヴァンゲリオン%エヴァンゲリオン%DARLINGintheFRANXX%リゼロ%コードギアス%初音ミク%ヘヴィーオブジェクト%キルラキル%猫%伊地知虹夏%ぼっちざろっく%ぼっち・ざ・ろっく%山田リョウ%ぼ喜多%山田リョウ(ぼっち・ざ・ろっく!)%結束バンド%GenshinImpact
+      run: dotnet run -c Debug -- --token=${{ secrets.TELEGRAM_BOT_TOKEN }} --usepixiv --pixivrefresh=${{ secrets.PIXIV_REFRESH_TOKEN }} -c -1001836193798 --rating Explicit --tags=女の子%ロリ%美少女%日常%AIイラスト%AI生成%原神%ホロライブ%VTuber%崩坏星穹铁道%新世紀エヴァンゲリオン%エヴァンゲリオン%DARLINGintheFRANXX%リゼロ%コードギアス%初音ミク%ヘヴィーオブジェクト%キルラキル%猫%伊地知虹夏%ぼっちざろっく%ぼっち・ざ・ろっく%山田リョウ%ぼ喜多%山田リョウ\(ぼっち・ざ・ろっく!\)%結束バンド%GenshinImpact
