@@ -23,28 +23,22 @@ namespace rever
                 imageProvider = new(input.UsePixiv ? input.PixivRefreshToken : null);
                 imageEditor = new();
 
-                Rating target;
-                if (!Enum.TryParse<Rating>(input.Rating, out target))
-                {
-                    target = Rating.Safe;
-                }
-
-                await Bot(client, input.Channel, input.Tags.ToArray(), target);
+                await Bot(client, input.Channel, new SearchParams(input));
             }
         }
-        static async Task Bot(TelegramBotClient bot, long channel, string[] tags, Rating target)
+        static async Task Bot(TelegramBotClient bot, long channel, SearchParams search)
         {
             var me = await bot.GetMeAsync();
             Console.WriteLine("Bot id: " + me.Id);
 
-            await Post(bot, channel, tags, target);
+            await Post(bot, channel, search);
         }
-        static async Task Post(TelegramBotClient bot, long channel, string[] tags, Rating target)
+        static async Task Post(TelegramBotClient bot, long channel, SearchParams search)
         {
 #if DEBUG
             Console.WriteLine($"Try to post to {channel} channel");
 #endif
-            PostInfo s = await imageProvider.GetImageStream(target, tags);
+            PostInfo s = await imageProvider.GetImageStream(search);
             Stream final = await imageEditor.CompressImage(s.imageStream);
             var input = new Telegram.Bot.Types.InputFiles.InputOnlineFile(final);
             await bot.SendPhotoAsync(channel, input, parseMode:Telegram.Bot.Types.Enums.ParseMode.Html, caption:s.ToString());

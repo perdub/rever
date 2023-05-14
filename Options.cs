@@ -17,6 +17,9 @@ namespace rever
         [Option("tags", Separator = '%', Required = false, HelpText = "Tags to find post. Note that we take only part of tags to find.")]
         public IEnumerable<string> Tags { get; set; }
 
+        [Option("bannedtags", Separator = '%', Required = false, HelpText = "You don`t get output post with this tags.")]
+        public IEnumerable<string> BannedTags { get; set; }
+
         [Option("rating", Required = false, Default = "Questionable", HelpText = "Rating to post.\nCan be General, Safe, Questionable and Explicit. By default - Safe.")]
         public string Rating { get; set; }
 

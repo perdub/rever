@@ -51,14 +51,14 @@ namespace rever
             }
             return selectedtags.ToArray();
         }
-        public async Task<PostInfo> GetImageStream(Rating rating, params string[] tags)
+        public async Task<PostInfo> GetImageStream(SearchParams search)
         {
 #if DEBUG
             Stopwatch starttime = new Stopwatch();
             starttime.Start();
             Console.WriteLine($"Try to get image...");
 #endif
-            string[] finaltags = getrandomtags(tags);
+            string[] finaltags = getrandomtags(search.tags);
 #if DEBUG
             Console.WriteLine($"Selected tags: {Newtonsoft.Json.JsonConvert.SerializeObject(finaltags)}");
 #endif
@@ -82,12 +82,12 @@ namespace rever
                         }
                     }
                     target = await source.GetRandomPostAsync(finaltags);
-                    if ((int)target.Rating > (int)rating)
+                    if ((int)target.Rating > (int)search.rating)
                     {
                         ratingbadresult++;
                         if (ratingbadresult > 9)
                         {
-                            finaltags = getrandomtags(tags);
+                            finaltags = getrandomtags(search.tags);
 #if DEBUG
                             Console.WriteLine($"Edit selected tags: {Newtonsoft.Json.JsonConvert.SerializeObject(finaltags)}");
 #endif
