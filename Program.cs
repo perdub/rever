@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using BooruSharp.Search.Post;
 using Telegram.Bot;
+using Telegram.Bot.Types;
 namespace rever
 {
     class Program
@@ -35,10 +36,14 @@ namespace rever
         }
         static async Task Post(TelegramBotClient bot, long channel, SearchParams search)
         {
+            Chat chat = await bot.GetChatAsync(channel);
 #if DEBUG
             Console.WriteLine($"Try to post to {channel} channel");
+            Console.WriteLine($"Invite link: {chat.InviteLink}");
 #endif
             PostInfo s = await imageProvider.GetImageStream(search);
+            s.telegramChannelLink = chat.InviteLink;
+            s.telegramChannelName = chat.Title;
             Stream final = await imageEditor.CompressImage(s.imageStream);
             var input = new Telegram.Bot.Types.InputFiles.InputOnlineFile(final);
             await bot.SendPhotoAsync(channel, input, parseMode:Telegram.Bot.Types.Enums.ParseMode.Html, caption:s.ToString());

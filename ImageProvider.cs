@@ -82,6 +82,21 @@ namespace rever
                         }
                     }
                     target = await source.GetRandomPostAsync(finaltags);
+
+                    bool banned = false;
+                    for(int i = 0; i< search.bannedtags.Length; i++)//check to banned tags
+                    {
+                        if (target.Tags.Contains(search.bannedtags[i]))
+                        {
+                            banned = true;
+                            break;
+                        }
+                    }
+                    if (banned)
+                    {
+                        continue;
+                    }
+
                     if ((int)target.Rating > (int)search.rating)
                     {
                         ratingbadresult++;

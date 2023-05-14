@@ -15,6 +15,9 @@ namespace rever
         public Uri fileLink { get; set; }
         public string[] tags { get; set; }
 
+        public string telegramChannelName { get; set; }
+        public string telegramChannelLink { get; set; }
+
         private static string clear(string tag)
         {
             //this function clear tag  from symbols like ( ) - ! and ets
@@ -26,7 +29,7 @@ namespace rever
         public override string ToString()
         {
             StringBuilder sb = new();
-            sb.Append($"<a href=\"{postLink.AbsoluteUri}\">Источник</a>|<a href=\"{fileLink.AbsoluteUri}\">Файл</a>");
+            sb.Append($"<a href=\"{postLink.AbsoluteUri}\">Источник</a>|<a href=\"{fileLink.AbsoluteUri}\">Файл</a>\n\n<a href=\"{telegramChannelLink}\">{telegramChannelName}</a>");
             sb.AppendLine(); sb.AppendLine();
             foreach(var tag in tags)
             {
