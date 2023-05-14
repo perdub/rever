@@ -23,7 +23,9 @@ namespace rever
             //this function clear tag  from symbols like ( ) - ! and ets
             //thiis need because telegram dont add this symbols to tags
             //please, change this only IF YOU REALLY NEED THIS
-            return Regex.Replace(tag, @"[-():!./@]", "_").Replace("&", "and");
+            tag = Regex.Replace(tag, @"[`・]", "");
+            tag = tag.Replace("&", "and");
+            return Regex.Replace(tag, @"[-():!./@]", "_");
         }
 
         public override string ToString()
