@@ -14,4 +14,4 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Run
-      run: dotnet run -c Debug -- --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001789721125 --bannedtags=furry&furry_female
+      run: dotnet run -c Debug -- --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001789721125 --bannedtags=furry%furry_female
