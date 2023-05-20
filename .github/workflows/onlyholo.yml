@@ -1,0 +1,17 @@
+name: Hentaibox
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0/10 * * * *'
+jobs:
+  build:
+    runs-on: ubuntu-latest           
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 5.0.x
+    - name: Run
+      run: dotnet run -c Debug -- --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001714886595 --tags=genshin_impact%honkai:_star_rail --bannedtags=furry%furry_female
