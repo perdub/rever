@@ -1,4 +1,4 @@
-name: Hentaibox
+name: Onlyholo
 on:
   workflow_dispatch:
   schedule:
