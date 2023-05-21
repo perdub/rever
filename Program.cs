@@ -4,6 +4,7 @@ using CommandLine;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.IO;
+using System.Text;
 using BooruSharp.Search.Post;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -46,7 +47,47 @@ namespace rever
             s.telegramChannelName = chat.Title;
             Stream final = await imageEditor.CompressImage(s.imageStream);
             var input = new Telegram.Bot.Types.InputFiles.InputOnlineFile(final);
-            await bot.SendPhotoAsync(channel, input, parseMode:Telegram.Bot.Types.Enums.ParseMode.Html, caption:s.ToString());
+
+            string caption = s.ToString();
+            int messagesCount = (caption.Length / 4096) + 1;
+            string[] messages = SplitByLength(caption, 4096);
+
+            var message = await bot.SendPhotoAsync(channel, input, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html, caption: messages[0]);
+            for (int i = 1; i < messagesCount; i++)
+            {
+                await bot.SendTextMessageAsync(channel, messages[i], Telegram.Bot.Types.Enums.ParseMode.Html, replyToMessageId: message.MessageId);
+            }
+        }
+        static string[] SplitByLength(string text, int maxLength)
+        {
+            if (text == null) throw new ArgumentNullException("text");
+            if (maxLength <= 0) throw new ArgumentOutOfRangeException("maxLength");
+            List<string> lines = new List<string>();
+            string[] words = text.Split(' ');
+            StringBuilder currentLine = new StringBuilder();
+            foreach (string word in words)
+            {
+                if (currentLine.Length == 0)
+                {
+                    currentLine.Append(word);
+                }
+                else if (currentLine.Length + 1 + word.Length <= maxLength)
+                {
+                    currentLine.Append(' ');
+                    currentLine.Append(word);
+                }
+                else
+                {
+                    lines.Add(currentLine.ToString());
+                    currentLine.Clear();
+                    currentLine.Append(word);
+                }
+            }
+            if (currentLine.Length > 0)
+            {
+                lines.Add(currentLine.ToString());
+            }
+            return lines.ToArray();
         }
     }
 }
