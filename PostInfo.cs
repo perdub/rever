@@ -18,13 +18,17 @@ namespace rever
         public string telegramChannelName { get; set; }
         public string telegramChannelLink { get; set; }
 
-        private static string clear(string tag)
+        private static string clear(string tag) 
+        // todo : add check if all symbols is numbers 
         {
             //this function clear tag  from symbols like ( ) - ! and ets
             //thiis need because telegram dont add this symbols to tags
             //please, change this only IF YOU REALLY NEED THIS
-            tag = tag.Replace("&", "and").Replace("`","").Replace("・","");
-            return Regex.Replace(tag, @"[-():!./@]", "_");
+            if(tag[0]=='_'){
+                tag = 't'+tag;
+            }
+            tag = tag.Replace("&", "and").Replace("`","").Replace("・","").Replace("'","");
+            return Regex.Replace(tag, @"[-():;!./@]", "_");
         }
 
         public override string ToString()

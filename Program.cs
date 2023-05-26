@@ -31,7 +31,7 @@ namespace rever
                     Sakugabooru=input.UseSakugabooru,
                     Lolibooru=input.UseLolibooru
                 };
-                imageProvider = new(a, input.UsePixiv ? input.PixivRefreshToken : null);
+                imageProvider = new(a, input.UsePixiv ? input.PixivRefreshToken : null, input.MaxTagsToRequest);
                 imageEditor = new();
 
                 await Bot(client, input.Channel, new SearchParams(input));

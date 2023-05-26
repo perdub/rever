@@ -23,6 +23,10 @@ namespace rever
         [Option("rating", Required = false, Default = "Questionable", HelpText = "Rating to post.\nCan be General, Safe, Questionable and Explicit. By default - Safe.")]
         public string Rating { get; set; }
 
+        [Option("maxiumtags", Required = false, Default = 10)]
+        public int MaxTagsToRequest {get;set;}
+
+
         [Option("pixivrefresh", Required = false, HelpText = "Pixiv api refresh token. Need only if you want to use pixiv as source.")]
         public string PixivRefreshToken { set; get; }
 
