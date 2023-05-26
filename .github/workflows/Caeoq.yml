@@ -1,4 +1,4 @@
-name: Onlyholo
+name: Caeoq
 on:
   workflow_dispatch:
   schedule:
@@ -14,4 +14,4 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Run
-      run: dotnet run -c Debug -- --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001714886595 --tags=genshin_impact%honkai:_star_rail --bannedtags=furry%furry_female --maxiumtags 1 --useyandere --usegelbooru --usedanboorudonmai --usesankakucomplex --usesakugabooru --uselolibooru
+      run: dotnet run -c Debug -- --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001919422070 --bannedtags=furry%furry_female%1boy --usepixiv --pixivrefresh=${{ secrets.PIXIV_REFRESH_TOKEN }} --useyandere --usegelbooru --usedanboorudonmai --usesankakucomplex --usesakugabooru --uselolibooru
