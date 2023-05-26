@@ -11,6 +11,7 @@ namespace rever{
         public bool Gelbooru {get;set;}
         public bool DanbooruDonmai {get;set;}
         public bool SankakuComplex {get;set;}
+        ///<summary>DON`T RECCOMEND TO USE</summary>
         public bool Sakugabooru {get;set;}
         public bool Lolibooru {get;set;}
     }

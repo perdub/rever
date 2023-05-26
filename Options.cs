@@ -40,7 +40,7 @@ namespace rever
         public bool UseDanbooruDonmai { get; set; }
         [Option("usesankakucomplex", Default = false)]
         public bool UseSankakuComplex { get; set; }
-        [Option("usesakugabooru", Default = false)]
+        [Option("usesakugabooru", Default = false, HelpText = "DON`T RECCOMEND TO USE")]
         public bool UseSakugabooru { get; set; }
         [Option("uselolibooru", Default = false)]
         public bool UseLolibooru { get; set; }
