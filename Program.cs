@@ -22,7 +22,7 @@ namespace rever
             {
                 Options input = par.Value;
                 client = new(input.Token);
-                imageProvider = new(input.UsePixiv ? input.PixivRefreshToken : null);
+                imageProvider = new(input.UsePixiv ? input.PixivRefreshToken : null, input.MaxTagsToRequest);
                 imageEditor = new();
 
                 await Bot(client, input.Channel, new SearchParams(input));

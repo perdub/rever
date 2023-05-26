@@ -17,8 +17,10 @@ namespace rever
         List<ABooru> boorus = new List<ABooru>();
         HttpClient downloader;
         Random random;
-        public ImageProvider(string pixivrefresh)
+        int _maxtags;
+        public ImageProvider(string pixivrefresh, int maxtags)
         {
+            _maxtags = maxtags;
             downloader = new HttpClient();
             random = new();
 
@@ -45,7 +47,7 @@ namespace rever
         {
             List<string> selectedtags = new List<string>();
             selectedtags.Capacity = tags.Length;
-            for(int i = 0; i<Math.Min(tags.Length, random.Next(1, 6)); i++)
+            for(int i = 0; i<Math.Min(Math.Min(tags.Length, _maxtags), random.Next(1, 6)); i++)
             {
                 selectedtags.Add(tags[random.Next(tags.Length)]);
             }
