@@ -17,29 +17,12 @@ namespace rever
         List<ABooru> boorus = new List<ABooru>();
         HttpClient downloader;
         Random random;
-        public ImageProvider(string pixivrefresh)
+        public ImageProvider(ActiveSources a, string pixivrefresh)
         {
             downloader = new HttpClient();
             random = new();
 
-            if (pixivrefresh != null)
-            {
-#if DEBUG
-                Console.WriteLine($"Enable pixiv api...");
-#endif
-                boorus.Add(new Pixiv());
-                ((Pixiv)boorus[^1]).LoginAsync(pixivrefresh).Wait();
-                boorus[^1].HttpClient = downloader;
-            }
-            else
-            {
-                boorus.Add(new Yandere());
-                boorus[^1].HttpClient = downloader;
-                boorus.Add(new DanbooruDonmai());
-                boorus[^1].HttpClient = downloader;
-                boorus.Add(new Gelbooru());
-                boorus[^1].HttpClient = downloader;
-            }
+            boorus = a.Build(downloader, pixivrefresh);
         }
         private string[] getrandomtags(params string[] tags)
         {

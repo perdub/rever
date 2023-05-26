@@ -22,7 +22,16 @@ namespace rever
             {
                 Options input = par.Value;
                 client = new(input.Token);
-                imageProvider = new(input.UsePixiv ? input.PixivRefreshToken : null);
+                ActiveSources a = new ActiveSources{
+                    Pixiv=input.UsePixiv,
+                    Yandere=input.UseYandere,
+                    Gelbooru=input.UseGelbooru,
+                    DanbooruDonmai=input.UseDanbooruDonmai,
+                    SankakuComplex=input.UseSankakuComplex,
+                    Sakugabooru=input.UseSakugabooru,
+                    Lolibooru=input.UseLolibooru
+                };
+                imageProvider = new(a, input.UsePixiv ? input.PixivRefreshToken : null);
                 imageEditor = new();
 
                 await Bot(client, input.Channel, new SearchParams(input));

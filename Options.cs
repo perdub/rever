@@ -26,7 +26,19 @@ namespace rever
         [Option("pixivrefresh", Required = false, HelpText = "Pixiv api refresh token. Need only if you want to use pixiv as source.")]
         public string PixivRefreshToken { set; get; }
 
-        [Option("usepixiv", Default = false, HelpText = "true if ypu want to use pixiv as source. If true, you need to set --pixivrefresh. If you using pixiv, you can`t use other sources(don`t ask why).")]
+        [Option("usepixiv", Default = false, HelpText = "true if ypu want to use pixiv as source. If true, you need to set --pixivrefresh. ")]
         public bool UsePixiv { get; set; }
+        [Option("useyandere", Default = true )]
+        public bool UseYandere { get; set; }
+        [Option("usegelbooru", Default = false)]
+        public bool UseGelbooru { get; set; }
+        [Option("usedanboorudonmai", Default = false)]
+        public bool UseDanbooruDonmai { get; set; }
+        [Option("usesankakucomplex", Default = false)]
+        public bool UseSankakuComplex { get; set; }
+        [Option("usesakugabooru", Default = false)]
+        public bool UseSakugabooru { get; set; }
+        [Option("uselolibooru", Default = false)]
+        public bool UseLolibooru { get; set; }
     }
 }
