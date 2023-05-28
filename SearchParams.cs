@@ -10,6 +10,7 @@ namespace rever
     {
         public SearchParams(BooruSharp.Search.Post.Rating rating, string[] tags, string[] bannedtags)
         {
+            // todo: add in this constructor MintagsInPost
             this.rating = rating;
             this.tags = tags;
             this.bannedtags = bannedtags;
@@ -24,9 +25,11 @@ namespace rever
             this.rating = r;
             this.tags = s.Tags.ToArray();
             this.bannedtags = s.BannedTags.ToArray();
+            this.mintags = s.MinTagsInPost;
         }
         public BooruSharp.Search.Post.Rating rating { get; private set; }
         public string[] tags {get;private set;}
         public string[] bannedtags { get; private set; }
+        public int mintags {get;set;}
     }
 }

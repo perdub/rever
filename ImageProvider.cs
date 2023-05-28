@@ -69,6 +69,10 @@ namespace rever
                     }
                     target = await source.GetRandomPostAsync(finaltags);
 
+                    if(target.Tags.Count<search.mintags){
+                        continue;
+                    }
+
                     bool banned = false;
                     for(int i = 0; i< search.bannedtags.Length; i++)//check to banned tags
                     {
