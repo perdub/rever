@@ -47,5 +47,8 @@ namespace rever
 
         [Option("mintagscount", Required =false, Default = 7, HelpText = "Minimal tags count in post")]
         public int MinTagsInPost {get;set;}
+
+        [Option("grabtags", Required = false, Default =false)]
+        public bool GrabTags{get;set;}
     }
 }

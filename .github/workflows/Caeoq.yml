@@ -14,4 +14,4 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Run
-      run: dotnet run -c Debug -- --mintagscount 20 --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001919422070 --bannedtags=furry%furry_female%1boy --usepixiv --pixivrefresh=${{ secrets.PIXIV_REFRESH_TOKEN }} --useyandere --usegelbooru --usedanboorudonmai --usesankakucomplex --uselolibooru
+      run: dotnet run -c Debug -- --grabtags --mintagscount 10 --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001919422070 --bannedtags=furry%furry_female%1boy --usepixiv --pixivrefresh=${{ secrets.PIXIV_REFRESH_TOKEN }} --useyandere --usegelbooru --usedanboorudonmai --usesankakucomplex --uselolibooru
