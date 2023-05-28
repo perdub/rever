@@ -17,7 +17,7 @@ namespace rever
         List<ABooru> boorus = new List<ABooru>();
         HttpClient downloader;
         Random random;
-      
+
         int _maxtags;
         public ImageProvider(ActiveSources a, string pixivrefresh, int maxtags)
         {
@@ -31,7 +31,7 @@ namespace rever
         {
             List<string> selectedtags = new List<string>();
             selectedtags.Capacity = tags.Length;
-            for(int i = 0; i<Math.Min(Math.Min(tags.Length, _maxtags), random.Next(1, 6)); i++)
+            for (int i = 0; i < Math.Min(Math.Min(tags.Length, _maxtags), random.Next(1, 6)); i++)
             {
                 selectedtags.Add(tags[random.Next(tags.Length)]);
             }
@@ -67,14 +67,27 @@ namespace rever
                             finaltags = buffer;
                         }
                     }
-                    target = await source.GetRandomPostAsync(finaltags);
 
-                    if(target.Tags.Count<search.mintags){
+                    try
+                    {
+                        target = await source.GetRandomPostAsync(finaltags);
+                    }
+                    catch (System.Net.Http.HttpRequestException e)
+                    {
+                        #if DEBUG
+                        Console.WriteLine($"Fall to get {source.BaseUrl}: {e.StatusCode} returned.");
+                        #endif
+                        source = boorus[random.Next(boorus.Count)];
+                        continue;
+                    }
+
+                    if (target.Tags.Count < search.mintags)
+                    {
                         continue;
                     }
 
                     bool banned = false;
-                    for(int i = 0; i< search.bannedtags.Length; i++)//check to banned tags
+                    for (int i = 0; i < search.bannedtags.Length; i++)//check to banned tags
                     {
                         if (target.Tags.Contains(search.bannedtags[i]))
                         {
@@ -104,11 +117,11 @@ namespace rever
                         continue;
                     }
                 }
-                catch(BooruSharp.Search.InvalidTags fall)
+                catch (BooruSharp.Search.InvalidTags fall)
                 {
                     //clear array from last element
                     string[] buffer = new string[finaltags.Length - 1];
-                    for(int i = 0; i < buffer.Length; i++)
+                    for (int i = 0; i < buffer.Length; i++)
                     {
                         buffer[i] = finaltags[i];
                     }
@@ -120,7 +133,7 @@ namespace rever
 #endif
                     continue;
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     throw;
                 }
