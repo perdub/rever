@@ -45,7 +45,7 @@ namespace rever
         [Option("uselolibooru", Default = false)]
         public bool UseLolibooru { get; set; }
 
-        [Option("mintagscount", Required =false, Default = 7, HelpText = "Minimal tags count in post")]
+        [Option("mintagscount", Required =false, Default = 0, HelpText = "Minimal tags count in post")]
         public int MinTagsInPost {get;set;}
 
         [Option("grabtags", Required = false, Default =false)]
