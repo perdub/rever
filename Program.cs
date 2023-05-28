@@ -55,7 +55,8 @@ namespace rever
             s.telegramChannelLink = chat.InviteLink;
             s.telegramChannelName = chat.Title;
             Stream final = await imageEditor.CompressImage(s.imageStream);
-            var input = new Telegram.Bot.Types.InputFiles.InputOnlineFile(final);
+            
+            var input = InputFile.FromStream(final);
 
             string caption = s.ToString();
             int messagesCount = (caption.Length / 4096) + 1;
@@ -64,7 +65,7 @@ namespace rever
             var message = await bot.SendPhotoAsync(channel, input, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html, caption: messages[0]);
             for (int i = 1; i < messagesCount; i++)
             {
-                await bot.SendTextMessageAsync(channel, messages[i], Telegram.Bot.Types.Enums.ParseMode.Html, replyToMessageId: message.MessageId);
+                await bot.SendTextMessageAsync(channel, messages[i], parseMode: Telegram.Bot.Types.Enums.ParseMode.Html, replyToMessageId: message.MessageId);
             }
         }
         static string[] SplitByLength(string text, int maxLength)

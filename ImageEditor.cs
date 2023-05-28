@@ -25,7 +25,7 @@ namespace rever
             Console.WriteLine($"Stream length - {buffer.Length}");
 #endif
 
-            using Image raw = (await Image.LoadWithFormatAsync(buffer)).Image;
+            using Image raw = (await Image.LoadAsync(buffer));
 
             if (raw.Width > 10000)
             {
