@@ -44,5 +44,11 @@ namespace rever
         public bool UseSakugabooru { get; set; }
         [Option("uselolibooru", Default = false)]
         public bool UseLolibooru { get; set; }
+
+        [Option("mintagscount", Required =false, Default = 0, HelpText = "Minimal tags count in post")]
+        public int MinTagsInPost {get;set;}
+
+        [Option("grabtags", Required = false, Default =false)]
+        public bool GrabTags{get;set;}
     }
 }
