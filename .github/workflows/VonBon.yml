@@ -1,1 +1,13 @@
-
+name: Caeoq
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0/10 * * * *'
+jobs:
+  build:
+    runs-on: ubuntu-latest           
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Run
+      run: dotnet run -c Debug -- --grabtags --mintagscount 3 --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001731968033 --usepixiv --pixivrefresh=${{ secrets.PIXIV_REFRESH_TOKEN }} --useyandere --usegelbooru --usedanboorudonmai --usesankakucomplex --uselolibooru
