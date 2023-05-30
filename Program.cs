@@ -35,6 +35,7 @@ namespace rever
                 imageEditor = new();
 
                 await Bot(client, input.Channel, new SearchParams(input));
+
             }
         }
         static async Task Bot(TelegramBotClient bot, long channel, SearchParams search)
@@ -59,8 +60,8 @@ namespace rever
             var input = InputFile.FromStream(final);
 
             string caption = s.ToString();
-            int messagesCount = (caption.Length / 4096) + 1;
-            string[] messages = SplitByLength(caption, 4096);
+            int messagesCount = (caption.Length / 1024 ) + 1;
+            string[] messages = SplitByLength(caption, 1024);
 
             var message = await bot.SendPhotoAsync(channel, input, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html, caption: messages[0]);
             for (int i = 1; i < messagesCount; i++)

@@ -144,6 +144,9 @@ namespace rever
             PostInfo result = new PostInfo();
 
             Stream raw;
+            #if DEBUG
+Console.WriteLine(target.FileUrl);
+            #endif
             if (source is Pixiv)
             {
                 raw = new MemoryStream(await ((Pixiv)source).ImageToByteArrayAsync(target));

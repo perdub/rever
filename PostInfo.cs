@@ -21,20 +21,25 @@ namespace rever
         private static string clear(string tag) 
         // todo : add check if all symbols is numbers 
         {
+            string tt;
             //this function clear tag  from symbols like ( ) - ! and ets
             //thiis need because telegram dont add this symbols to tags
             //please, change this only IF YOU REALLY NEED THIS
-            if(tag[0]=='_'){
-                tag = 't'+tag;
+            if(tag[0]=='_')
+            {
+                tt = 't'+tag;
             }
-            tag = tag.Replace("&", "and").Replace("`","").Replace("・","").Replace("'","");
-            return Regex.Replace(tag, @"[-():;!./@]", "_");
+            else{
+                tt = tag;
+            }
+            tt = tt.Replace("&", "and").Replace("`","").Replace("・","").Replace("'","");
+            return Regex.Replace(tt, @"[-():;>~+^<!./@]", "_");
         }
 
         public override string ToString()
         {
             StringBuilder sb = new();
-            sb.Append($"<a href=\"{postLink.AbsoluteUri}\">Источник</a>|<a href=\"{fileLink.AbsoluteUri}\">Файл</a>\n\n<a href=\"{telegramChannelLink}\">{telegramChannelName}</a>");
+            sb.Append($"<a href=\"{postLink.AbsoluteUri}\">Источник</a>|<a href=\"{fileLink.AbsoluteUri}\">Файл</a>\n\n<a href=\"{telegramChannelLink}\">{telegramChannelName}</a>".Replace("_", "%5F"));
             sb.AppendLine(); sb.AppendLine();
             foreach(var tag in tags)
             {
