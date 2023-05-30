@@ -117,7 +117,7 @@ namespace rever
                         continue;
                     }
                 }
-                catch (BooruSharp.Search.InvalidTags fall)
+                catch (BooruSharp.Search.InvalidTags)
                 {
                     //clear array from last element
                     string[] buffer = new string[finaltags.Length - 1];
@@ -133,7 +133,7 @@ namespace rever
 #endif
                     continue;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     throw;
                 }
