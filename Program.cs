@@ -14,6 +14,7 @@ namespace rever
     {
         static ImageProvider imageProvider;
         static ImageEditor imageEditor;
+        static bool _disablecaptions;
         async static Task Main(string[] args)
         {
             var par = Parser.Default.ParseArguments<Options>(args);
@@ -33,6 +34,7 @@ namespace rever
                 };
                 imageProvider = new(a, input.UsePixiv ? input.PixivRefreshToken : null, input.MaxTagsToRequest);
                 imageEditor = new();
+                _disablecaptions = input.DisableCaptions;
 
                 await Bot(client, input.Channel, new SearchParams(input));
 
@@ -59,11 +61,11 @@ namespace rever
             
             var input = InputFile.FromStream(final);
 
-            string caption = s.ToString();
+            string caption = _disablecaptions ? "" : s.ToString();
             int messagesCount = (caption.Length / 1024 ) + 1;
             string[] messages = SplitByLength(caption, 1024);
 
-            var message = await bot.SendPhotoAsync(channel, input, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html, caption: messages[0]);
+            var message = await bot.SendPhotoAsync(channel, input, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html, caption: _disablecaptions ? "" :messages[0]);
             for (int i = 1; i < messagesCount; i++)
             {
                 await bot.SendTextMessageAsync(channel, messages[i], parseMode: Telegram.Bot.Types.Enums.ParseMode.Html, replyToMessageId: message.MessageId);

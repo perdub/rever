@@ -50,5 +50,8 @@ namespace rever
 
         [Option("grabtags", Required = false, Default =false)]
         public bool GrabTags{get;set;}
+
+        [Option("disablecaptions", Required = false, Default = false)]
+        public bool DisableCaptions {get;set;}
     }
 }
