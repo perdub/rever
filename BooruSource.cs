@@ -8,6 +8,7 @@ using System.Net.Http;
 
 namespace rever
 {
+    //класс который обьединяет abooru и isource
     public class BooruSource : ISource
     {
         readonly ABooru _booru;
@@ -15,10 +16,13 @@ namespace rever
         {
             _booru=booru;   
         }
+        //эти свойства зависят от конкретной реализации _booru
         public bool UseTags { get {return true;} }
         public bool NoMoreThanTwoTags {get{return _booru.NoMoreThanTwoTags;}}
         public string BaseUrl {get{return _booru.BaseUrl.ToString();}}
         public bool IsPixiv {get{return _booru is Pixiv;}}
+
+        // ссылка на последний результат поиска
         SearchResult s;
         public SearchResult GetResultForPixiv { get{return s;}}
 

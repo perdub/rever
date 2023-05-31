@@ -2,6 +2,7 @@ using System;
 
 namespace rever
 {
+    //представляет собой результат вызова апи и используется как возвращаемый тип из ISource
     public class SourceResult
     {
         public string FileUrl{get;init;}

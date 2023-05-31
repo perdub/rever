@@ -21,6 +21,7 @@ namespace rever{
 
     //фабрика создания обьектов boorusharp из ActiveSource обьекта
     public static class BoooruFactory{
+        
         public static ISource BooruSource(this ABooru b)
         {
             return new BooruSource(b);

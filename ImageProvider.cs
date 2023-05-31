@@ -142,7 +142,7 @@ namespace rever
                     }
                     finaltags = buffer;
 
-                    
+                    //если все деги были удалены и источник - pixiv, то мы  генерируем заново(его апи не поддерживает поиск без тегов)
                     if (finaltags.Length < 1)
                     {
                         if (source is BooruSource sr && sr.IsPixiv)
