@@ -5,6 +5,7 @@ using BooruSharp.Booru;
 using BooruSharp.Others;
 
 namespace rever{
+    //класс, который описывает использующиеся источники картинок
     public class ActiveSources{
         public bool Pixiv {get;set;}
         public bool Yandere {get;set;}
@@ -15,6 +16,8 @@ namespace rever{
         public bool Sakugabooru {get;set;}
         public bool Lolibooru {get;set;}
     }
+
+    //фабрика создания обьектов boorusharp из ActiveSource обьекта
     public static class BoooruFactory{
         public static List<ABooru> Build(this ActiveSources source, HttpClient client, string pixivrefresh){
             List<ABooru> res = new();

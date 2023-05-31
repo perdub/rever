@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CommandLine;
 namespace rever
 {
+    //класс для парсинга входных данных через CommandLine
     public class Options
     {
         [Option("token", Required = true, HelpText = "Token to telegram bot.")]
@@ -24,7 +25,8 @@ namespace rever
         public string Rating { get; set; }
 
         [Option("maxiumtags", Required = false, Default = 10)]
-        public int MaxTagsToRequest {get;set;}
+        // максимальное количество тегов в запросе к конкретному апи
+        public int MaxTagsToRequest {get;set;} 
 
 
         [Option("pixivrefresh", Required = false, HelpText = "Pixiv api refresh token. Need only if you want to use pixiv as source.")]

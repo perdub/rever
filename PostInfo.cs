@@ -8,16 +8,24 @@ using System.Text.RegularExpressions;
 
 namespace rever
 {
+    //представляет результат вызова api
     public class PostInfo
     {
+        //скачанное изображение
         public Stream imageStream { get; set; }
+        //ссылка на пост
         public Uri postLink { get; set; }
+        //ссылка на файл(на сервере)
         public Uri fileLink { get; set; }
+        //массив тегов
         public string[] tags { get; set; }
 
+        //информация о тгк
         public string telegramChannelName { get; set; }
         public string telegramChannelLink { get; set; }
 
+
+        //очищает тег от непподерживаемых символов для создания хештега
         private static string clear(string tag) 
         // todo : add check if all symbols is numbers 
         {
@@ -38,6 +46,7 @@ namespace rever
 
         public override string ToString()
         {
+            //создание сообщения для поста с html-разметкой
             StringBuilder sb = new();
             sb.Append($"<a href=\"{postLink.AbsoluteUri}\">Источник</a>|<a href=\"{fileLink.AbsoluteUri}\">Файл</a>\n\n<a href=\"{telegramChannelLink}\">{telegramChannelName}</a>".Replace("_", "%5F"));
             sb.AppendLine(); sb.AppendLine();

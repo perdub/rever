@@ -11,12 +11,15 @@ using SixLabors.ImageSharp.Formats;
 
 namespace rever
 {
+    //класс для сжатия картинок
     public class ImageEditor
     {
+        //максимальный размер картинки, разрешённый апи телеграмма
         const int StreamMaxSize = 10 * 1024 * 1024;
 
         public async Task<Stream> CompressImage(Stream image)
         {
+            //создание нового стрима для того что бы могли и читать и записывать в него
             using MemoryStream buffer = new MemoryStream();
             await image.CopyToAsync(buffer);
             buffer.Position = 0;
@@ -24,9 +27,11 @@ namespace rever
 #if DEBUG
             Console.WriteLine($"Stream length - {buffer.Length}");
 #endif
-
+            //загрузка картинки в обьект
             using Image raw = (await Image.LoadAsync(buffer));
 
+
+            //усечение картинки по размерам
             if (raw.Width > 10000)
             {
                 //compress by horizontaly
@@ -41,6 +46,9 @@ namespace rever
 
             MemoryStream output = new MemoryStream();
             PngEncoder encoder = new PngEncoder { CompressionLevel = PngCompressionLevel.BestCompression };
+            //здесь мы сохраняем изображение с CompressionLevel = PngCompressionLevel.BestCompression а 
+            // затем проверяем размер нового потока. Если он больше чем StreamMaxSize, то мы изменяем
+            // ширину картинки и снова сохраняем в поток, и так пока размер потока не будет меньше константы
             raw.Save(output, encoder);
             while (output.Length >= StreamMaxSize)
             {
