@@ -40,7 +40,7 @@ namespace rever
             else{
                 tt = tag;
             }
-            tt = tt.Replace("&", "and").Replace("`","").Replace("・","").Replace("'","");
+            tt = tt.Replace("&", "and").Replace("`","").Replace("・","").Replace("'","").Replace(" ","_");
             return Regex.Replace(tt, @"[-():;>~+^<!./@]", "_");
         }
 

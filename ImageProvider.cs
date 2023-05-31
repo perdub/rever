@@ -26,7 +26,7 @@ namespace rever
             random = new();
 
             //сборка необходимых booru api
-            boorus = a.Build(downloader, pixivrefresh);
+            boorus = a.Build(downloader, random, pixivrefresh);
         }
         //этот метод возвращает случайные теги из всех возможных. количество тегов будет равно 
         // минимальному значению из следующих: количество всех тегов, --maxiumtags флагу и случайному целому числу от 1 до 5
@@ -94,7 +94,7 @@ namespace rever
                     //проверка на забаненные теги с использованием флага banned
                     // забаненный тег - пост, который содержит хотя бы один такой тег, никогда не может быть результатьм вызова
                     bool banned = false;
-                    for (int i = 0; i < search.bannedtags.Length; i++)
+                    for (int i = 0; i < target.Tags.Length; i++)
                     {
                         if (search.bannedtags.Contains(target.Tags[i].ToLower()))
                         {

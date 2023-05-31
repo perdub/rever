@@ -34,7 +34,7 @@ namespace rever
 
         [Option("usepixiv", Default = false, HelpText = "true if ypu want to use pixiv as source. If true, you need to set --pixivrefresh. ")]
         public bool UsePixiv { get; set; }
-        [Option("useyandere", Default = true )]
+        [Option("useyandere", Default = false )]
         public bool UseYandere { get; set; }
         [Option("usegelbooru", Default = false)]
         public bool UseGelbooru { get; set; }
@@ -46,6 +46,9 @@ namespace rever
         public bool UseSakugabooru { get; set; }
         [Option("uselolibooru", Default = false)]
         public bool UseLolibooru { get; set; }
+
+        [Option("useanimepictures", Default = false)]
+        public bool UseAnimePictures{get;set;}
 
         [Option("mintagscount", Required =false, Default = 0, HelpText = "Minimal tags count in post")]
         public int MinTagsInPost {get;set;}

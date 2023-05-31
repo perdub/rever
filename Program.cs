@@ -32,7 +32,9 @@ namespace rever
                     DanbooruDonmai=input.UseDanbooruDonmai,
                     SankakuComplex=input.UseSankakuComplex,
                     Sakugabooru=input.UseSakugabooru,
-                    Lolibooru=input.UseLolibooru
+                    Lolibooru=input.UseLolibooru,
+
+                    AnimePictures = input.UseAnimePictures
                 };
                 imageProvider = new(a, input.UsePixiv ? input.PixivRefreshToken : null, input.MaxTagsToRequest);
                 imageEditor = new();

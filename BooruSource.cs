@@ -4,6 +4,8 @@ using BooruSharp.Booru;
 using BooruSharp.Search.Post;
 using BooruSharp.Others;
 using System.Threading.Tasks;
+using System.Net.Http;
+
 namespace rever
 {
     public class BooruSource : ISource
@@ -19,6 +21,10 @@ namespace rever
         public bool IsPixiv {get{return _booru is Pixiv;}}
         SearchResult s;
         public SearchResult GetResultForPixiv { get{return s;}}
+
+        //это не используется в этой реализации
+        HttpClient ISource.Client { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        Random ISource.Random { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public async Task<SourceResult> GetApiResult(params string[] tags)
         {

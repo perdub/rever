@@ -15,6 +15,8 @@ namespace rever{
         ///<summary>DON`T RECCOMEND TO USE</summary>
         public bool Sakugabooru {get;set;}
         public bool Lolibooru {get;set;}
+
+        public bool AnimePictures {get;set;}
     }
 
     //фабрика создания обьектов boorusharp из ActiveSource обьекта
@@ -23,7 +25,7 @@ namespace rever{
         {
             return new BooruSource(b);
         }
-        public static List<ISource> Build(this ActiveSources source, HttpClient client, string pixivrefresh){
+        public static List<ISource> Build(this ActiveSources source, HttpClient client, Random r, string pixivrefresh){
             List<ISource> res = new();
 
             if(source.DanbooruDonmai){
@@ -63,6 +65,12 @@ namespace rever{
                 res.Add(q.BooruSource());
             }
             
+            if(source.AnimePictures){
+                var q = new AnimePictures();
+                q.Client = client;
+                q.Random = r;
+                res.Add(q);
+            }
 
             return res;
         }
