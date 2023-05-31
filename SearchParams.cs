@@ -27,6 +27,13 @@ namespace rever
             if(s.GrabTags){
                 grabTags();
             }
+
+            lowcase();
+        }
+        //приводит все теги к маленьким буквам
+        void lowcase(){
+            tags = tags.Select(x => x.ToLower()).ToArray();
+            bannedtags = bannedtags.Select(x => x.ToLower()).ToArray();
         }
 
         //загрузка и добавление статичных тегов из tags.tags и bannedtags.tags

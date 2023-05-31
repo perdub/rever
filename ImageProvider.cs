@@ -96,7 +96,7 @@ namespace rever
                     bool banned = false;
                     for (int i = 0; i < search.bannedtags.Length; i++)
                     {
-                        if (target.Tags.Contains(search.bannedtags[i]))
+                        if (search.bannedtags.Contains(target.Tags[i].ToLower()))
                         {
                             banned = true;
                             break;
