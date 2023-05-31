@@ -7,5 +7,6 @@ namespace rever
         public string FileUrl{get;init;}
         public string PostUrl{get;init;}
         public string[] Tags{get;init;}
+        public int Rating {get;init;}
     }
 }

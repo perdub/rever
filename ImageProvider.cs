@@ -14,7 +14,7 @@ namespace rever
 {
     public class ImageProvider
     {
-        List<ABooru> boorus = new List<ABooru>();
+        List<ISource> boorus = new List<ISource>();
         HttpClient downloader;
         Random random;
 
@@ -53,11 +53,11 @@ namespace rever
             Console.WriteLine($"Selected tags: {Newtonsoft.Json.JsonConvert.SerializeObject(finaltags)}");
 #endif  
             //обьявление поля для результата и счётчика плохих запросов
-            SearchResult target;
+            SourceResult target;
             int ratingbadresult = 0;
 
             //выбор случайного апи
-            ABooru source = boorus[random.Next(boorus.Count)];
+            ISource source = boorus[random.Next(boorus.Count)];
 #if DEBUG
             Console.WriteLine($"Booru source base url: {source.BaseUrl}");
 #endif
@@ -80,12 +80,12 @@ namespace rever
                     }
 
                     //запрос к апи!!!
-                    target = await source.GetRandomPostAsync(finaltags);
+                    target = await source.GetApiResult(finaltags);
 
 
 
                     //если установлен флаг для определения минимального количества тегов в посте и в посте меньше
-                    if (target.Tags.Count < search.mintags)
+                    if (target.Tags.Length < search.mintags)
                     {
                         //возвращение в начало цикла
                         continue;
@@ -177,9 +177,9 @@ namespace rever
 #if DEBUG
             Console.WriteLine(target.FileUrl);
 #endif
-            if (source is Pixiv)
+            if (source is BooruSource s && s.IsPixiv)
             {
-                raw = new MemoryStream(await ((Pixiv)source).ImageToByteArrayAsync(target));
+                raw = new MemoryStream(await ((Pixiv)source).ImageToByteArrayAsync(s.GetResultForPixiv));
             }
             else
             {
@@ -188,8 +188,8 @@ namespace rever
 
             //присваинвание результата выходному обьекту
             result.imageStream = raw;
-            result.fileLink = target.FileUrl;
-            result.postLink = target.PostUrl;
+            result.fileLink = new Uri(target.FileUrl);
+            result.postLink = new Uri(target.PostUrl);
             result.tags = target.Tags.ToArray();
 #if DEBUG
             starttime.Stop();

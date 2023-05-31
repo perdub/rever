@@ -6,7 +6,8 @@ namespace rever
     public interface ISource
     {
         bool UseTags{get;}
-        Task<SourceResult> GetImageStream(params string[] tags);
-        
+        bool NoMoreThanTwoTags {get;}
+        Task<SourceResult> GetApiResult(params string[] tags);
+        string BaseUrl {get;}
     }
 }

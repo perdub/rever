@@ -19,37 +19,48 @@ namespace rever{
 
     //фабрика создания обьектов boorusharp из ActiveSource обьекта
     public static class BoooruFactory{
-        public static List<ABooru> Build(this ActiveSources source, HttpClient client, string pixivrefresh){
-            List<ABooru> res = new();
+        public static ISource BooruSource(this ABooru b)
+        {
+            return new BooruSource(b);
+        }
+        public static List<ISource> Build(this ActiveSources source, HttpClient client, string pixivrefresh){
+            List<ISource> res = new();
 
             if(source.DanbooruDonmai){
-                res.Add(new DanbooruDonmai());
-                res[^1].HttpClient = client;
+                var q = new DanbooruDonmai();
+                q.HttpClient = client;
+                res.Add(q.BooruSource());
             }
             if(source.Yandere){
-                res.Add(new Yandere());
-                res[^1].HttpClient = client;
+                var q = new Yandere();
+                q.HttpClient = client;
+                res.Add(q.BooruSource());
             }
             if(source.Gelbooru){
-                res.Add(new Gelbooru());
-                res[^1].HttpClient = client;
+                var q = new Gelbooru();
+                q.HttpClient = client;
+                res.Add(q.BooruSource());
             }
             if(source.Pixiv){
-                res.Add(new Pixiv());
-                ((Pixiv)res[^1]).LoginAsync(pixivrefresh).Wait();
-                res[^1].HttpClient = client;
+                var q = new Pixiv();
+                q.LoginAsync(pixivrefresh).Wait();
+                q.HttpClient = client;
+                res.Add(q.BooruSource());
             }
             if(source.SankakuComplex){
-                res.Add(new SankakuComplex());
-                res[^1].HttpClient = client;
+                var q = new SankakuComplex();
+                q.HttpClient = client;
+                res.Add(q.BooruSource());
             }
             if(source.Sakugabooru){
-                res.Add(new Sakugabooru());
-                res[^1].HttpClient = client;
+                var q = new Sakugabooru();
+                q.HttpClient = client;
+                res.Add(q.BooruSource());
             }
             if(source.Lolibooru){
-                res.Add(new Lolibooru());
-                res[^1].HttpClient = client;
+                var q = new Lolibooru();
+                q.HttpClient = client;
+                res.Add(q.BooruSource());
             }
             
 
