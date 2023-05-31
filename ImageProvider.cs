@@ -79,24 +79,11 @@ namespace rever
                         }
                     }
 
-                    try
-                    {
-                        //запрос к апи!!!
-                        target = await source.GetRandomPostAsync(finaltags);
-                    }
-                    catch (System.Net.Http.HttpRequestException e)
-                    {
-                        //если запрос закончился сетевым исключением, то апи недоступно
-                        #if DEBUG
-                        //уведомление в консоль
-                        Console.WriteLine($"Fall to get {source.BaseUrl}: {e.StatusCode} returned.");
-                        #endif
-                        //смена апи
-                        source = boorus[random.Next(boorus.Count)];
-                        //возвращение в начало цикла
-                        continue;
-                    }
-                    
+                    //запрос к апи!!!
+                    target = await source.GetRandomPostAsync(finaltags);
+
+
+
                     //если установлен флаг для определения минимального количества тегов в посте и в посте меньше
                     if (target.Tags.Count < search.mintags)
                     {
@@ -161,6 +148,18 @@ namespace rever
 #endif
                     continue;
                 }
+                //если запрос закончился сетевым исключением, то апи недоступно
+                catch (System.Net.Http.HttpRequestException e)
+                {
+#if DEBUG
+                    //уведомление в консоль
+                    Console.WriteLine($"Fall to get {source.BaseUrl}: {e.StatusCode} returned.");
+#endif
+                    //смена апи
+                    source = boorus[random.Next(boorus.Count)];
+                    //возвращение в начало цикла
+                    continue;
+                }
                 //если исключение неизвестно, мы пропускаем его дальше
                 catch (Exception)
                 {
@@ -175,9 +174,9 @@ namespace rever
 
             //скачивание файла
             Stream raw;
-            #if DEBUG
-Console.WriteLine(target.FileUrl);
-            #endif
+#if DEBUG
+            Console.WriteLine(target.FileUrl);
+#endif
             if (source is Pixiv)
             {
                 raw = new MemoryStream(await ((Pixiv)source).ImageToByteArrayAsync(target));
