@@ -142,6 +142,15 @@ namespace rever
                     }
                     finaltags = buffer;
 
+                    
+                    if (finaltags.Length < 1)
+                    {
+                        if (source is BooruSource sr && sr.IsPixiv)
+                        {
+                            finaltags = getrandomtags(search.tags);
+                        }
+                    }
+
 #if DEBUG
                     Console.WriteLine("Remove one last tag...");
                     Console.WriteLine($"Now selected tags: {Newtonsoft.Json.JsonConvert.SerializeObject(finaltags)}");
