@@ -145,7 +145,7 @@ namespace rever
                     //если все деги были удалены и источник - pixiv, то мы  генерируем заново(его апи не поддерживает поиск без тегов)
                     if (finaltags.Length < 1)
                     {
-                        if (source is BooruSource sr && sr.IsPixiv)
+                        if (source is PixivSource)
                         {
                             finaltags = getrandomtags(search.tags);
                         }
@@ -186,9 +186,9 @@ namespace rever
 #if DEBUG
             Console.WriteLine(target.FileUrl);
 #endif
-            if (source is BooruSource s && s.IsPixiv)
+            if (source is PixivSource s)
             {
-                raw = new MemoryStream(await ((Pixiv)source).ImageToByteArrayAsync(s.GetResultForPixiv));
+                raw = new MemoryStream(await s.GetPixiv.ImageToByteArrayAsync(s.PixivResult));
             }
             else
             {

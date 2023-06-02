@@ -24,6 +24,8 @@ namespace rever{
         
         public static ISource BooruSource(this ABooru b)
         {
+            if(b is Pixiv)
+                return new PixivSource(b);
             return new BooruSource(b);
         }
         public static List<ISource> Build(this ActiveSources source, HttpClient client, Random r, string pixivrefresh){
