@@ -34,7 +34,8 @@ namespace rever
                     Sakugabooru=input.UseSakugabooru,
                     Lolibooru=input.UseLolibooru,
 
-                    AnimePictures = input.UseAnimePictures
+                    AnimePictures = input.UseAnimePictures,
+                    Rule34 = input.UseRule34
                 };
                 imageProvider = new(a, input.UsePixiv ? input.PixivRefreshToken : null, input.MaxTagsToRequest);
                 imageEditor = new();

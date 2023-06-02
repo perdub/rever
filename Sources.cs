@@ -17,6 +17,7 @@ namespace rever{
         public bool Lolibooru {get;set;}
 
         public bool AnimePictures {get;set;}
+        public bool Rule34 {get;set;}
     }
 
     //фабрика создания обьектов boorusharp из ActiveSource обьекта
@@ -24,6 +25,7 @@ namespace rever{
         
         public static ISource BooruSource(this ABooru b)
         {
+            // если мы передаём new Pixiv, то мы создаём иной объект для работы с апи
             if(b is Pixiv)
                 return new PixivSource(b);
             return new BooruSource(b);
@@ -70,6 +72,12 @@ namespace rever{
             
             if(source.AnimePictures){
                 var q = new AnimePictures();
+                q.Client = client;
+                q.Random = r;
+                res.Add(q);
+            }
+            if(source.Rule34){
+                var q = new Rule34Source();
                 q.Client = client;
                 q.Random = r;
                 res.Add(q);

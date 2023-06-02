@@ -50,6 +50,9 @@ namespace rever
         [Option("useanimepictures", Default = false)]
         public bool UseAnimePictures{get;set;}
 
+        [Option("userule34", Default = false)]
+        public bool UseRule34 {get;set;}
+
         [Option("mintagscount", Required =false, Default = 0, HelpText = "Minimal tags count in post")]
         public int MinTagsInPost {get;set;}
 
