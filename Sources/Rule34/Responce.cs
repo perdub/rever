@@ -1,3 +1,5 @@
+//сгенерировано конвертером json в объекты
+
 namespace rever
 {
     using System;
