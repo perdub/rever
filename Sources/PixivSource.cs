@@ -8,7 +8,7 @@ using System.Net.Http;
 
 namespace rever
 {
-    //класс который обьединяет abooru и isource
+    //кастомная реализация BooruSource для pixiv`а
     public class PixivSource : ISource
     {
         readonly ABooru _booru;
