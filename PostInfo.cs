@@ -41,11 +41,12 @@ namespace rever
                 tt = tag;
             }
             tt = tt.Replace("&", "and").Replace("`","").Replace("・","").Replace("'","").Replace(" ","_");
-            return Regex.Replace(tt, @"[-():;>~+^<!./@]", "_");
+            return Regex.Replace(tt, @"[-():;>~#+^<!./@]", "_");
         }
 
         public override string ToString()
         {
+            Array.Sort(tags);
             //создание сообщения для поста с html-разметкой
             StringBuilder sb = new();
             sb.Append($"<a href=\"{postLink.AbsoluteUri}\">Источник</a>|<a href=\"{fileLink.AbsoluteUri}\">Файл</a>\n\n<a href=\"{telegramChannelLink}\">{telegramChannelName}</a>".Replace("_", "%5F"));
