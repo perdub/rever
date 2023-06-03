@@ -27,6 +27,9 @@ namespace rever
             if(s.GrabTags){
                 grabTags();
             }
+            if(s.GrabBannedTags){
+                grabBannedTags();
+            }
 
             lowcase();
         }
@@ -40,6 +43,9 @@ namespace rever
         void grabTags(){
             //todo: изменить пути к тегам
             tags = tags.Concat(System.IO.File.ReadLines("bin/Debug/net7.0/tags.tags")).ToArray();
+        }
+
+        void grabBannedTags(){
             bannedtags = bannedtags.Concat(System.IO.File.ReadLines("bin/Debug/net7.0/bannedtags.tags")).ToArray();
         }
 
