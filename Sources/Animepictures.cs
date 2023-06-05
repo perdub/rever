@@ -18,16 +18,6 @@ namespace rever
 
         public HttpClient Client { get; set; }
         public Random Random { get; set; }
-        //логин не работает поэтому часть постов не будет видно
-        async Task Login()
-        {
-            Client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36");
-            var logindata = new StringContent("\"{\"login\":\"perdub\",\"password\":\"myijijijiplpis123456ppppoppooopoppoopopopopn\"}\"");
-            var resp = await Client.PostAsync("https://anime-pictures.net/api/v3/auth", logindata);
-            Client.DefaultRequestHeaders.Remove("asian_server");
-            Client.DefaultRequestHeaders.Add("asian_server", Newtonsoft.Json.JsonConvert.DeserializeObject<LoginResult>(await resp.Content.ReadAsStringAsync()).token);
-        }
-        record class LoginResult(bool success, string token);
 
         //получение результата
         public async Task<SourceResult> GetApiResult(params string[] tags)
@@ -43,6 +33,9 @@ namespace rever
                 //получение случайного поста
                 postid = Random.Next(799689);
                 posturl = $"https://anime-pictures.net/posts/{postid}?lang=en";
+#if DEBUG
+                Console.WriteLine($"Post url: {posturl}");
+#endif
                 //попытка получения html страницы поста
                 result = await Client.GetAsync(posturl);
                 if (((int)result.StatusCode) == 301 || ((int)result.StatusCode) == 302)
@@ -53,7 +46,8 @@ namespace rever
                 IDocument dom = await context.OpenAsync(async h => h.Content(await result.Content.ReadAsStringAsync()));
 
                 //если мы можем найти обьект с этим ид то поста не существует и мы были перенаправленны на страницу с постами
-                if(dom.GetElementById("posts")!=null){
+                if (dom.GetElementById("posts") != null)
+                {
                     continue;
                 }
 
@@ -67,9 +61,21 @@ namespace rever
                         ptags.Add(i.TextContent.Split("\n")[0]);
                     }
                 }
-                //получение ссылки на изображение
-                var download_icon = dom.GetElementsByClassName("download_icon");
-                var fileurl = ((AngleSharp.Html.Dom.IHtmlAnchorElement)download_icon[0]).Href;
+
+                string fileurl;
+                try
+                {
+                    //получение ссылки на изображение
+                    var download_icon = dom.GetElementsByClassName("download_icon");
+                    fileurl = ((AngleSharp.Html.Dom.IHtmlAnchorElement)download_icon[0]).Href;
+                }
+                catch (System.ArgumentOutOfRangeException)
+                {
+#if DEBUG
+                    Console.WriteLine("Fall to parse");
+#endif
+                    continue;
+                }
 
                 //создание обьекта результата
                 SourceResult r = new SourceResult
