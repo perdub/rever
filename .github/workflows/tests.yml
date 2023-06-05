@@ -14,7 +14,7 @@ jobs:
       run: dotnet run -c Debug -- --grabbannedtags --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001714886595 --tags=genshin_impact%honkai:_star_rail --bannedtags=furry%furry_female --maxiumtags 1 --useyandere --usegelbooru --usedanboorudonmai --usesankakucomplex --uselolibooru
     - name: Run VonBon
       run: dotnet run -c Debug -- --userule34 --useanimepictures --grabtags --grabbannedtags --mintagscount 3 --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001731968033 --usepixiv --pixivrefresh=${{ secrets.PIXIV_REFRESH_TOKEN }} --useyandere --usegelbooru --usedanboorudonmai --usesankakucomplex --uselolibooru
-    - name: nyanart
+    - name: Run nyanart
       run: dotnet run -c Debug -- --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001761383404 --grabbannedtags --rating Safe --bannedtags=furry%furry_female --useanimepictures --useyandere --usegelbooru --usedanboorudonmai --usesankakucomplex --uselolibooru
     - name: Run hentaibox
       run: dotnet run -c Debug -- --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001789721125 --bannedtags=furry%furry_female%1boy%multiple_boys%aged_down --useanimepictures --useyandere --usegelbooru --grabbannedtags --usedanboorudonmai --usesankakucomplex --uselolibooru --userule34
