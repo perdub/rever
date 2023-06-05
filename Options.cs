@@ -26,7 +26,7 @@ namespace rever
 
         [Option("maxiumtags", Required = false, Default = 10)]
         // максимальное количество тегов в запросе к конкретному апи
-        public int MaxTagsToRequest {get;set;} 
+        public int MaxTagsToRequest { get; set; }
 
 
         [Option("pixivrefresh", Required = false, HelpText = "Pixiv api refresh token. Need only if you want to use pixiv as source.")]
@@ -34,7 +34,7 @@ namespace rever
 
         [Option("usepixiv", Default = false, HelpText = "true if ypu want to use pixiv as source. If true, you need to set --pixivrefresh. ")]
         public bool UsePixiv { get; set; }
-        [Option("useyandere", Default = false )]
+        [Option("useyandere", Default = false)]
         public bool UseYandere { get; set; }
         [Option("usegelbooru", Default = false)]
         public bool UseGelbooru { get; set; }
@@ -48,21 +48,27 @@ namespace rever
         public bool UseLolibooru { get; set; }
 
         [Option("useanimepictures", Default = false)]
-        public bool UseAnimePictures{get;set;}
+        public bool UseAnimePictures { get; set; }
 
         [Option("userule34", Default = false)]
-        public bool UseRule34 {get;set;}
+        public bool UseRule34 { get; set; }
 
-        [Option("mintagscount", Required =false, Default = 0, HelpText = "Minimal tags count in post")]
-        public int MinTagsInPost {get;set;}
+        [Option("usevk", Default = false)]
+        public bool UseVk { get; set; }
 
-        [Option("grabtags", Required = false, Default =false)]
-        public bool GrabTags{get;set;}
+        [Option("vkaccesstoken", HelpText = "Required if you want use vk groups as source")]
+        public string VkAccessToken { get; set; }
 
-        [Option("grabbannedtags", Required = false, Default =false)]
-        public bool GrabBannedTags{get;set;}
+        [Option("mintagscount", Required = false, Default = 0, HelpText = "Minimal tags count in post")]
+        public int MinTagsInPost { get; set; }
+
+        [Option("grabtags", Required = false, Default = false)]
+        public bool GrabTags { get; set; }
+
+        [Option("grabbannedtags", Required = false, Default = false)]
+        public bool GrabBannedTags { get; set; }
 
         [Option("disablecaptions", Required = false, Default = false)]
-        public bool DisableCaptions {get;set;}
+        public bool DisableCaptions { get; set; }
     }
 }

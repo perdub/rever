@@ -5,6 +5,11 @@ using BooruSharp.Booru;
 using BooruSharp.Others;
 
 namespace rever{
+    //класс, который содержит различные токены
+    public class Tokens{
+        public string PixivRefreshToken {get;set;}
+        public string VkAccessToken {get;set;}
+    }
     //класс, который описывает использующиеся источники картинок
     public class ActiveSources{
         public bool Pixiv {get;set;}
@@ -18,6 +23,7 @@ namespace rever{
 
         public bool AnimePictures {get;set;}
         public bool Rule34 {get;set;}
+        public bool VkGroups {get;set;}
     }
 
     //фабрика создания обьектов boorusharp из ActiveSource обьекта
@@ -30,7 +36,7 @@ namespace rever{
                 return new PixivSource(b);
             return new BooruSource(b);
         }
-        public static List<ISource> Build(this ActiveSources source, HttpClient client, Random r, string pixivrefresh){
+        public static List<ISource> Build(this ActiveSources source, HttpClient client, Random r, Tokens tokens){
             List<ISource> res = new();
 
             if(source.DanbooruDonmai){
@@ -50,7 +56,7 @@ namespace rever{
             }
             if(source.Pixiv){
                 var q = new Pixiv();
-                q.LoginAsync(pixivrefresh).Wait();
+                q.LoginAsync(tokens.PixivRefreshToken).Wait();
                 q.HttpClient = client;
                 res.Add(q.BooruSource());
             }
@@ -78,6 +84,12 @@ namespace rever{
             }
             if(source.Rule34){
                 var q = new Rule34Source();
+                q.Client = client;
+                q.Random = r;
+                res.Add(q);
+            }
+            if(source.VkGroups){
+                var q = new VKSource(tokens.VkAccessToken);
                 q.Client = client;
                 q.Random = r;
                 res.Add(q);

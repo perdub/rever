@@ -35,9 +35,14 @@ namespace rever
                     Lolibooru=input.UseLolibooru,
 
                     AnimePictures = input.UseAnimePictures,
-                    Rule34 = input.UseRule34
+                    Rule34 = input.UseRule34,
+                    VkGroups = input.UseVk
                 };
-                imageProvider = new(a, input.UsePixiv ? input.PixivRefreshToken : null, input.MaxTagsToRequest);
+                Tokens t = new Tokens{
+                    PixivRefreshToken = input.PixivRefreshToken,
+                    VkAccessToken = input.VkAccessToken
+                };
+                imageProvider = new(a, t, input.MaxTagsToRequest);
                 imageEditor = new();
                 _disablecaptions = input.DisableCaptions;
 

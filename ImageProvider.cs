@@ -19,14 +19,14 @@ namespace rever
         Random random;
 
         int _maxtags;
-        public ImageProvider(ActiveSources a, string pixivrefresh, int maxtags)
+        public ImageProvider(ActiveSources a, Tokens tokens, int maxtags)
         {
             _maxtags = maxtags;
             downloader = new HttpClient();
             random = new();
 
             //сборка необходимых booru api
-            boorus = a.Build(downloader, random, pixivrefresh);
+            boorus = a.Build(downloader, random, tokens);
         }
         //этот метод возвращает случайные теги из всех возможных. количество тегов будет равно 
         // минимальному значению из следующих: количество всех тегов, --maxiumtags флагу и случайному целому числу от 1 до 5

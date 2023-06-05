@@ -11,7 +11,7 @@ namespace rever{
 
         public bool NoMoreThanTwoTags => false;
 
-        public string BaseUrl => throw new NotImplementedException();
+        public string BaseUrl => "https://vk.com/";
 
         public HttpClient Client { get; set; }
         public Random Random { get;set; }
@@ -53,10 +53,10 @@ namespace rever{
             var item = VkResponce.FromJson(res).Response.Items[0];
 
             SourceResult result = new SourceResult{
-                PostUrl = "https://vk.com/thenekotopia?w=wall-175384626_"+item.PostId,
+                PostUrl = "https://vk.com/wall-175384626_"+item.PostId,
                 FileUrl = item.Sizes[^1].Url.ToString(),
-                Rating = 1 //подумать над этим!!
-                
+                Rating = 1, //подумать над этим!!
+                Tags = new string[0]
             };
             return result;
         }

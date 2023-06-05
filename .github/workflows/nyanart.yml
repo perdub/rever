@@ -10,4 +10,4 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
     - name: Run
-      run: dotnet run -c Debug -- --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001761383404 --grabbannedtags --rating Safe --bannedtags=furry%furry_female --useanimepictures --useyandere --usegelbooru --usedanboorudonmai --usesankakucomplex --uselolibooru
+      run: dotnet run -c Debug -- --usevk --vkaccesstoken ${{secrets.VK_ACCESS_TOKEN}} --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001761383404 --grabbannedtags --rating Safe --bannedtags=furry%furry_female --useanimepictures --useyandere --usegelbooru --usedanboorudonmai --usesankakucomplex --uselolibooru
