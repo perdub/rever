@@ -41,7 +41,7 @@ namespace rever
                 tt = tag;
             }
             tt = tt.Replace("&", "and").Replace("`","").Replace("・","").Replace("'","").Replace(" ","_");
-            return Regex.Replace(tt, @"[-():;>~#+^<!./@]", "_");
+            return Regex.Replace(tt, @"[-():;>~#+=^<!./@]", "_");
         }
 
         public override string ToString()
