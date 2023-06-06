@@ -42,11 +42,11 @@ namespace rever
         //загрузка и добавление статичных тегов из tags.tags и bannedtags.tags
         void grabTags(){
             //todo: изменить пути к тегам
-            tags = tags.Concat(System.IO.File.ReadLines("bin/Debug/net7.0/tags.tags")).ToArray();
+            tags = tags.Concat(System.IO.File.ReadLines("tags.tags")).ToArray();
         }
 
         void grabBannedTags(){
-            bannedtags = bannedtags.Concat(System.IO.File.ReadLines("bin/Debug/net7.0/bannedtags.tags")).ToArray();
+            bannedtags = bannedtags.Concat(System.IO.File.ReadLines("bannedtags.tags")).ToArray();
         }
 
         //допустимый рейтинг
