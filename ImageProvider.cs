@@ -14,19 +14,22 @@ namespace rever
 {
     public class ImageProvider
     {
-        List<ABooru> boorus = new List<ABooru>();
+        List<ISource> boorus = new List<ISource>();
         HttpClient downloader;
         Random random;
 
         int _maxtags;
-        public ImageProvider(ActiveSources a, string pixivrefresh, int maxtags)
+        public ImageProvider(ActiveSources a, Tokens tokens, int maxtags)
         {
             _maxtags = maxtags;
             downloader = new HttpClient();
             random = new();
 
-            boorus = a.Build(downloader, pixivrefresh);
+            //сборка необходимых booru api
+            boorus = a.Build(downloader, random, tokens);
         }
+        //этот метод возвращает случайные теги из всех возможных. количество тегов будет равно 
+        // минимальному значению из следующих: количество всех тегов, --maxiumtags флагу и случайному целому числу от 1 до 5
         private string[] getrandomtags(params string[] tags)
         {
             List<string> selectedtags = new List<string>();
@@ -44,52 +47,56 @@ namespace rever
             starttime.Start();
             Console.WriteLine($"Try to get image...");
 #endif
+            //выбор тегов для запроса
             string[] finaltags = getrandomtags(search.tags);
 #if DEBUG
             Console.WriteLine($"Selected tags: {Newtonsoft.Json.JsonConvert.SerializeObject(finaltags)}");
-#endif
-            SearchResult target;
+#endif  
+            //обьявление поля для результата и счётчика плохих запросов
+            SourceResult target;
             int ratingbadresult = 0;
-            ABooru source = boorus[random.Next(boorus.Count)];
+
+            //выбор случайного апи
+            ISource source = boorus[random.Next(boorus.Count)];
 #if DEBUG
             Console.WriteLine($"Booru source base url: {source.BaseUrl}");
 #endif
+            //тут начинается самое веселое :((
             do
             {
+                //бесконечный цикл с запросами к апи, мы выйдем из него как только все условия будут выполнены
                 try
                 {
+                    //если в выбраном апи есть ограничение на только два тега для поиска, то мы усекаем массив
                     if (source.NoMoreThanTwoTags)
                     {
                         if (finaltags.Length != 0)
                         {
+                            //почему тут только один тег? потому что с двумя оно почемуто не работает
                             string[] buffer = new string[1];
                             buffer[0] = finaltags[0];
                             finaltags = buffer;
                         }
                     }
 
-                    try
+                    //запрос к апи!!!
+                    target = await source.GetApiResult(finaltags);
+
+
+
+                    //если установлен флаг для определения минимального количества тегов в посте и в посте меньше
+                    if (target.Tags.Length < search.mintags)
                     {
-                        target = await source.GetRandomPostAsync(finaltags);
-                    }
-                    catch (System.Net.Http.HttpRequestException e)
-                    {
-                        #if DEBUG
-                        Console.WriteLine($"Fall to get {source.BaseUrl}: {e.StatusCode} returned.");
-                        #endif
-                        source = boorus[random.Next(boorus.Count)];
+                        //возвращение в начало цикла
                         continue;
                     }
 
-                    if (target.Tags.Count < search.mintags)
-                    {
-                        continue;
-                    }
-
+                    //проверка на забаненные теги с использованием флага banned
+                    // забаненный тег - пост, который содержит хотя бы один такой тег, никогда не может быть результатьм вызова
                     bool banned = false;
-                    for (int i = 0; i < search.bannedtags.Length; i++)//check to banned tags
+                    for (int i = 0; i < target.Tags.Length; i++)
                     {
-                        if (target.Tags.Contains(search.bannedtags[i]))
+                        if (search.bannedtags.Contains(target.Tags[i].ToLower()))
                         {
                             banned = true;
                             break;
@@ -100,26 +107,34 @@ namespace rever
                         continue;
                     }
 
+                    //сверка рейтинга поста и целевого(пока что нет чёткой проверки, только на более)
                     if ((int)target.Rating > (int)search.rating)
                     {
+                        //увеличение флага
                         ratingbadresult++;
+
                         if (ratingbadresult > 9)
                         {
+                            //если флаг был установлен 10 раз, то мы генерируем теги заново(ибо мы не сможем получить пост с нужным рейтингом)
                             finaltags = getrandomtags(search.tags);
 #if DEBUG
                             Console.WriteLine($"Edit selected tags: {Newtonsoft.Json.JsonConvert.SerializeObject(finaltags)}");
 #endif
+                            //сброс флага
                             ratingbadresult = 0;
                         }
 #if DEBUG
                         Console.WriteLine("Censored!");
 #endif
+                        //возвращение к началу циккла
                         continue;
                     }
                 }
-                catch (BooruSharp.Search.InvalidTags fall)
+                //если booru api ничего не может найти, то генерируется BooruSharp.Search.InvalidTags
+                catch (BooruSharp.Search.InvalidTags)
                 {
-                    //clear array from last element
+                    //и мы чистим массив от последнего элемента
+                    //Array.Clear не используется так как он не может удалить единственный элемент из массива
                     string[] buffer = new string[finaltags.Length - 1];
                     for (int i = 0; i < buffer.Length; i++)
                     {
@@ -127,35 +142,63 @@ namespace rever
                     }
                     finaltags = buffer;
 
+                    //если все деги были удалены и источник - pixiv, то мы  генерируем заново(его апи не поддерживает поиск без тегов)
+                    if (finaltags.Length < 1)
+                    {
+                        if (source is PixivSource)
+                        {
+                            finaltags = getrandomtags(search.tags);
+                        }
+                    }
+
 #if DEBUG
                     Console.WriteLine("Remove one last tag...");
                     Console.WriteLine($"Now selected tags: {Newtonsoft.Json.JsonConvert.SerializeObject(finaltags)}");
 #endif
                     continue;
                 }
-                catch (Exception e)
+                //если запрос закончился сетевым исключением, то апи недоступно
+                catch (System.Net.Http.HttpRequestException e)
+                {
+#if DEBUG
+                    //уведомление в консоль
+                    Console.WriteLine($"Fall to get {source.BaseUrl}: {e.StatusCode} returned.");
+#endif
+                    //смена апи
+                    source = boorus[random.Next(boorus.Count)];
+                    //возвращение в начало цикла
+                    continue;
+                }
+                //если исключение неизвестно, мы пропускаем его дальше
+                catch (Exception)
                 {
                     throw;
                 }
+                //если код дошёл до сюда, то у нас есть пост, который подходит под все требования, и мы выходим из цикла
                 break;
             }
             while (true);
 
             PostInfo result = new PostInfo();
 
+            //скачивание файла
             Stream raw;
-            if (source is Pixiv)
+#if DEBUG
+            Console.WriteLine(target.FileUrl);
+#endif
+            if (source is PixivSource s)
             {
-                raw = new MemoryStream(await ((Pixiv)source).ImageToByteArrayAsync(target));
+                raw = new MemoryStream(await s.GetPixiv.ImageToByteArrayAsync(s.PixivResult));
             }
             else
             {
                 raw = await downloader.GetStreamAsync(target.FileUrl);
             }
 
+            //присваинвание результата выходному обьекту
             result.imageStream = raw;
-            result.fileLink = target.FileUrl;
-            result.postLink = target.PostUrl;
+            result.fileLink = new Uri(target.FileUrl);
+            result.postLink = new Uri(target.PostUrl);
             result.tags = target.Tags.ToArray();
 #if DEBUG
             starttime.Stop();

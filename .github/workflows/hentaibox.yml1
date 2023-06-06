@@ -9,9 +9,5 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-    - name: Install .NET Core
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 5.0.x
     - name: Run
-      run: dotnet run -c Debug -- --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001789721125 --bannedtags=furry%furry_female%1boy%multiple_boys%aged_down --useyandere --usegelbooru --usedanboorudonmai --usesankakucomplex --uselolibooru
+      run: dotnet run -c Debug -- --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001789721125 --bannedtags=furry%furry_female%1boy%multiple_boys%aged_down --useanimepictures --useyandere --usegelbooru --grabbannedtags --usedanboorudonmai --usesankakucomplex --uselolibooru --userule34

@@ -1,0 +1,24 @@
+name: Testing
+on:
+  push:
+  pull_request:
+jobs:
+  build:
+    runs-on: ubuntu-latest           
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Run OMO
+      run: dotnet run -c Debug -- --grabbannedtags --token=${{ secrets.TELEGRAM_BOT_TOKEN }} --usepixiv --pixivrefresh=${{ secrets.PIXIV_REFRESH_TOKEN }} -c -1001836193798 --rating Explicit --tags=女の子%ロリ%美少女%日常%AIイラスト%AI生成%原神%ホロライブ%VTuber%崩坏星穹铁道%新世紀エヴァンゲリオン%エヴァンゲリオン%DARLINGintheFRANXX%リゼロ%コードギアス%初音ミク%ヘヴィーオブジェクト%キルラキル%猫%伊地知虹夏%ぼっちざろっく%ぼっち・ざ・ろっく%山田リョウ%ぼ喜多%山田リョウ\(ぼっち・ざ・ろっく!\)%結束バンド%GenshinImpact --bannedtags=furry%furry_female
+    - name: Run Onlyholo
+      run: dotnet run -c Debug -- --grabbannedtags --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001714886595 --tags=genshin_impact%honkai:_star_rail --bannedtags=furry%furry_female --maxiumtags 1 --useyandere --usegelbooru --usedanboorudonmai --usesankakucomplex --uselolibooru
+    - name: Run VonBon
+      run: dotnet run -c Debug -- --userule34 --useanimepictures --grabtags --grabbannedtags --mintagscount 3 --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001731968033 --usepixiv --pixivrefresh=${{ secrets.PIXIV_REFRESH_TOKEN }} --useyandere --usegelbooru --usedanboorudonmai --usesankakucomplex --uselolibooru
+    - name: Run nyanart
+      run: dotnet run -c Debug -- --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001761383404 --grabbannedtags --rating Safe --bannedtags=furry%furry_female --useanimepictures --useyandere --usegelbooru --usedanboorudonmai --usesankakucomplex --uselolibooru
+    - name: Run hentaibox
+      run: dotnet run -c Debug -- --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001789721125 --bannedtags=furry%furry_female%1boy%multiple_boys%aged_down --useanimepictures --useyandere --usegelbooru --grabbannedtags --usedanboorudonmai --usesankakucomplex --uselolibooru --userule34
+    - name: Run Caeoq
+      run: dotnet run -c Debug -- --grabtags --mintagscount 10 --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001919422070 --bannedtags=furry%furry_female%1boy --usepixiv --pixivrefresh=${{ secrets.PIXIV_REFRESH_TOKEN }} --useyandere --usegelbooru --grabbannedtags --usedanboorudonmai --usesankakucomplex --uselolibooru --useanimepictures
+    - name: Run Anigalaxy
+      run: dotnet run -c Debug -- --userule34 --grabbannedtags --grabtags --token=${{ secrets.TELEGRAM_BOT_TOKEN }} -c -1001251996661 --tags=genshin_impact%ass%pussy%open_shirt%pantsu%girls_und_panzer%animal_ears%loli%trap%wet%naked%bottomless%seifuku%undressing%uniform%bunny_ears%bunny_girl%nekomimi%neko%hatsune_miku%re_zero_kara_hajimeru_isekai_seikatsu%maid%honkai:_star_rail%wallpaper%bocchi_the_rock!%yuri%darling_in_the_franxx%neon_genesis_evangelion%sono_bisque_doll_wa_koi_wo_suru%kono_subarashii_sekai_ni_shukufuku_wo%ijiranaide_nagatoro-san%code_geass%1girl%breasts%school_uniform%solo%erect_nipples%multiple_girls%fate_grand_order%cosplay%dress%multicolored_hair%flower%solo%looking_at_viewer%grabbing_another\'s_breast%choker%long_hair%upper_body   --bannedtags=furry%furry_female%my_little_pony%brawl_stars%smoking%dragon_ball%male%male_focus%blue_skin%dark_skin_male%tattoo --useyandere --usegelbooru --usedanboorudonmai --usesankakucomplex --uselolibooru --useanimepictures
