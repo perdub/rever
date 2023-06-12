@@ -18,21 +18,21 @@ namespace rever{
 
         StringBuilder builder = new();
         string access_token;
-        long[] owner_ids;
-        string buildUrl(long id, int offset = int.MaxValue){
+        VKAlbum[] targets;
+        string buildUrl(VKAlbum album, int offset = int.MaxValue){
             builder.Clear();
-            builder.Append("https://api.vk.com/method/photos.get?album_id=wall&v=5.131&count=1");
+            builder.Append("https://api.vk.com/method/photos.get?v=5.131&count=1");
             builder.Append($"&access_token={access_token}");
-            builder.Append($"&owner_id={id}");
             builder.Append($"&offset={offset}");
+            builder.Append(album.ToString());
             return builder.ToString();
         }
         void loadOwners(){
             // todo: change path!
-            var arr = File.ReadAllLines("bin\\Debug\\net7.0\\vkowners.list");
-            owner_ids = new long[arr.Length];
+            var arr = File.ReadAllLines("vkowners.list");
+            targets = new VKAlbum[arr.Length];
             for(int i = 0; i<arr.Length;i++){
-                owner_ids[i] = Convert.ToInt64(arr[i]);
+                targets[i] = new VKAlbum(arr[i]);
             }
         }
         public VKSource(string accessToken)
@@ -43,7 +43,7 @@ namespace rever{
         public async Task<SourceResult> GetApiResult(params string[] tags)
         {
             //получение паблика для работы с ним
-            long target = owner_ids[Random.Next(owner_ids.Length)];
+            VKAlbum target = targets[Random.Next(targets.Length)];
 
             string firstreq = await (await Client.GetAsync(buildUrl(target))).Content.ReadAsStringAsync();
             int groupImageCount = (int)VkResponce.FromJson(firstreq).Response.Count;
@@ -53,7 +53,7 @@ namespace rever{
             var item = VkResponce.FromJson(res).Response.Items[0];
 
             SourceResult result = new SourceResult{
-                PostUrl = "https://vk.com/wall-175384626_"+item.PostId,
+                PostUrl = $"https://vk.com/photo{item.OwnerId}_{item.Id}",
                 FileUrl = item.Sizes[^1].Url.ToString(),
                 Rating = 1, //подумать над этим!!
                 Tags = new string[0]
